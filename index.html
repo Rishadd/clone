@@ -44,6 +44,13 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
+        /* Main View Wrappers */
+        .view-section {
+            display: block;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
         /* Header */
         .header {
             display: flex;
@@ -52,10 +59,17 @@
             padding: 20px 20px 10px 20px;
         }
 
+        .header-center {
+            justify-content: center;
+        }
+
         .logo {
             font-size: 32px;
             font-weight: 200;
             letter-spacing: 4px;
+        }
+
+        .header:not(.header-center) .logo {
             margin-left: 45%;
             transform: translateX(-50%);
         }
@@ -101,7 +115,6 @@
             position: relative;
         }
 
-        /* Modifiers for the inner profile card that doesn't have an arrow */
         .profile-card.no-arrow {
             margin-top: 15px;
         }
@@ -306,6 +319,7 @@
             font-size: 11px;
             cursor: pointer;
             gap: 5px;
+            width: 70px;
         }
 
         .nav-item i {
@@ -316,7 +330,104 @@
             color: var(--accent-purple);
         }
 
-        /* --- Page Overlays (Profile Details & Image Viewer) --- */
+        /* --- CATEGORIES VIEW SPECIFIC CSS --- */
+        .search-container {
+            padding: 5px 20px 20px;
+        }
+
+        .search-box {
+            background-color: var(--card-bg);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            gap: 12px;
+        }
+
+        .search-icon {
+            color: var(--accent-purple);
+            font-size: 16px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .top-cat-tabs {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px 20px;
+        }
+
+        .top-cat-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--accent-purple);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 12px;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .top-cat-tab.active {
+            background-color: var(--accent-purple);
+            color: #ffffff;
+        }
+
+        .top-cat-tab i {
+            font-size: 26px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px 20px;
+        }
+
+        .mod-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            height: 105px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .mod-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: auto;
+            line-height: 1.3;
+            max-width: 90%;
+        }
+
+        .mod-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--accent-purple);
+            font-size: 22px;
+        }
+
+        /* --- OVERLAY SCREENS CSS --- */
         
         .page-overlay {
             display: none; 
@@ -377,7 +488,7 @@
             margin: 15px 20px;
             border-radius: 12px;
             padding: 25px 20px;
-            display: flex; /* Kept as flex for default viewing state */
+            display: flex; 
             flex-direction: column;
             gap: 22px;
         }
@@ -552,88 +663,169 @@
     </div>
     <!-- End Profile Details Overlay -->
 
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">iris</div>
-        <div class="bell-container">
-            <i class="fa-regular fa-bell"></i>
-            <div class="notification-dot"></div>
-        </div>
-    </header>
-
-    <!-- Profile Section -->
-    <h2 class="section-title">Profile</h2>
-    <div class="profile-card">
-        <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
-        <div class="profile-info">
-            <!-- Consistently using R Rishadd as requested -->
-            <h3>R Rishadd</h3>
-            <p>B Tech, 4th Year, 7th Semester</p>
-            <p>Electronics and Communication Engineering</p>
-        </div>
-        <i class="fa-solid fa-chevron-right" onclick="openProfileDetails()"></i>
-    </div>
-
-    <!-- Dashboard Section -->
-    <h2 class="section-title">Dashboard</h2>
-    <div class="dashboard-grid">
-        <div class="dash-card">
-            <div class="dash-card-header">
-                <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
-                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+    <!-- ============================================== -->
+    <!-- MAIN HOME VIEW                                 -->
+    <!-- ============================================== -->
+    <div id="homeView" class="view-section">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">iris</div>
+            <div class="bell-container">
+                <i class="fa-regular fa-bell"></i>
+                <div class="notification-dot"></div>
             </div>
-            <div class="credits-val">127</div>
-            <div class="credits-label">Major</div>
-        </div>
-        <div class="dash-card">
-            <div class="dash-card-header">
-                <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+        </header>
+
+        <!-- Profile Section -->
+        <h2 class="section-title">Profile</h2>
+        <div class="profile-card">
+            <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
+            <div class="profile-info">
+                <!-- Consistently using R Rishadd as requested -->
+                <h3>R Rishadd</h3>
+                <p>B Tech, 4th Year, 7th Semester</p>
+                <p>Electronics and Communication Engineering</p>
             </div>
-            <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
-            <div class="credits-label">Room Number D308</div>
+            <i class="fa-solid fa-chevron-right" onclick="openProfileDetails()"></i>
         </div>
+
+        <!-- Dashboard Section -->
+        <h2 class="section-title">Dashboard</h2>
+        <div class="dashboard-grid">
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+                <div class="credits-val">127</div>
+                <div class="credits-label">Major</div>
+            </div>
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+                </div>
+                <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
+                <div class="credits-label">Room Number D308</div>
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <h2 class="section-title">Courses</h2>
+        <div class="horizontal-scroll">
+            <div class="course-card">
+                <div class="course-code">EC357</div>
+                <div class="course-title">Adhoc and Sensor Networks</div>
+                <div class="course-status">Attendance not marked yet.</div>
+            </div>
+            <div class="course-card">
+                <div class="red-corner-tag"></div>
+                <div class="course-code">EC840</div>
+                <div class="course-title">Millimeter Wave Communications</div>
+                <div class="course-status">Course has been dropp...</div>
+            </div>
+        </div>
+
+        <!-- Favorite Screens Section -->
+        <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
+        <div class="horizontal-scroll">
+            <div class="fav-card-add">
+                <span>Add Favorite<br>Screens</span>
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+
+        <!-- Announcements Section -->
+        <h2 class="section-title">Announcements</h2>
     </div>
 
-    <!-- Courses Section -->
-    <h2 class="section-title">Courses</h2>
-    <div class="horizontal-scroll">
-        <div class="course-card">
-            <div class="course-code">EC357</div>
-            <div class="course-title">Adhoc and Sensor Networks</div>
-            <div class="course-status">Attendance not marked yet.</div>
+    <!-- ============================================== -->
+    <!-- CATEGORIES VIEW (New screen from Image 7)      -->
+    <!-- ============================================== -->
+    <div id="categoriesView" class="view-section" style="display: none;">
+        <!-- Centered Header -->
+        <header class="header header-center">
+            <div class="logo">iris</div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search Modules">
+            </div>
         </div>
-        <div class="course-card">
-            <div class="red-corner-tag"></div>
-            <div class="course-code">EC840</div>
-            <div class="course-title">Millimeter Wave Communications</div>
-            <div class="course-status">Course has been dropp...</div>
+
+        <!-- Top Categories Row -->
+        <div class="top-cat-tabs">
+            <div class="top-cat-tab">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Institute</span>
+            </div>
+            <div class="top-cat-tab active">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Academics</span>
+            </div>
+            <div class="top-cat-tab">
+                <i class="fa-solid fa-chess-rook"></i>
+                <span>Campus</span>
+            </div>
+        </div>
+
+        <!-- Modules Grid -->
+        <div class="modules-grid">
+            <div class="mod-card">
+                <span class="mod-title">Academic Calendar</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Courses and Grades</span>
+                <i class="fa-solid fa-layer-group mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Course Registration</span>
+                <i class="fa-regular fa-clipboard mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">All Courses</span>
+                <i class="fa-solid fa-book mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Credits Tracker</span>
+                <i class="fa-solid fa-list-check mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Grade Card</span>
+                <i class="fa-regular fa-file-lines mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Gyan</span>
+                <i class="fa-regular fa-lightbulb mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Timetable</span>
+                <i class="fa-solid fa-table-cells mod-icon"></i>
+            </div>
+            <!-- Placeholders for the partially visible row -->
+            <div class="mod-card">
+                <span class="mod-title"></span>
+                <i class="fa-regular fa-file-code mod-icon"></i>
+            </div>
+            <div class="mod-card"></div>
         </div>
     </div>
-
-    <!-- Favorite Screens Section -->
-    <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
-    <div class="horizontal-scroll">
-        <div class="fav-card-add">
-            <span>Add Favorite<br>Screens</span>
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-
-    <!-- Announcements Section -->
-    <h2 class="section-title">Announcements</h2>
     
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button (Always Visible) -->
     <div class="fab">
         <i class="fa-solid fa-comment"></i>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation (Always Visible) -->
     <nav class="bottom-nav">
-        <div class="nav-item active">
+        <div class="nav-item active" id="navHomeBtn" onclick="switchView('home')">
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" id="navCategoriesBtn" onclick="switchView('categories')">
             <i class="fa-solid fa-table-cells-large"></i>
             <span>Categories</span>
         </div>
@@ -647,6 +839,7 @@
 
 <!-- JavaScript to handle screen transitions, tabs, and modals -->
 <script>
+    // Handles Image Modal
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
     }
@@ -654,6 +847,7 @@
         document.getElementById('imageModal').style.display = 'none';
     }
 
+    // Handles Profile Details Overlay
     function openProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'flex';
     }
@@ -678,6 +872,29 @@
             personalTab.classList.remove('active');
             academicsDetails.style.display = 'flex';
             personalDetails.style.display = 'none';
+        }
+    }
+
+    // Handles Main View switching (Home vs Categories)
+    function switchView(viewName) {
+        const homeView = document.getElementById('homeView');
+        const categoriesView = document.getElementById('categoriesView');
+        const navHomeBtn = document.getElementById('navHomeBtn');
+        const navCategoriesBtn = document.getElementById('navCategoriesBtn');
+
+        // Always close profile overlay if navigating back from bottom bar
+        closeProfileDetails();
+
+        if (viewName === 'home') {
+            homeView.style.display = 'block';
+            categoriesView.style.display = 'none';
+            navHomeBtn.classList.add('active');
+            navCategoriesBtn.classList.remove('active');
+        } else if (viewName === 'categories') {
+            categoriesView.style.display = 'block';
+            homeView.style.display = 'none';
+            navCategoriesBtn.classList.add('active');
+            navHomeBtn.classList.remove('active');
         }
     }
 </script>
