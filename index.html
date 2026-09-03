@@ -137,8 +137,8 @@
             position: absolute;
             right: 20px;
             color: var(--accent-purple);
-            cursor: pointer; /* Added cursor to show it is clickable */
-            padding: 10px; /* Increased hit area */
+            cursor: pointer; 
+            padding: 10px; 
         }
 
         /* Dashboard Area */
@@ -276,7 +276,7 @@
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 60; /* Ensure it stays above the profile page overlay */
+            z-index: 60; 
         }
 
         .fab i {
@@ -316,20 +316,20 @@
             color: var(--accent-purple);
         }
 
-        /* --- NEW: Page Overlays (Profile Details & Image Viewer) --- */
+        /* --- Page Overlays (Profile Details & Image Viewer) --- */
         
         .page-overlay {
-            display: none; /* Hidden by default */
+            display: none; 
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: var(--bg-dark);
-            z-index: 50; /* Above home screen, below modal and FAB */
+            z-index: 50; 
             overflow-y: auto;
             flex-direction: column;
-            padding-bottom: 100px; /* Space for scrolling past FAB */
+            padding-bottom: 100px; 
         }
 
         .page-header {
@@ -339,7 +339,7 @@
             padding: 20px 20px 10px 20px;
             font-size: 16px;
             font-weight: 600;
-            margin-top: 20px; /* Simulation for status bar spacing */
+            margin-top: 20px; 
         }
 
         .page-header i {
@@ -377,7 +377,7 @@
             margin: 15px 20px;
             border-radius: 12px;
             padding: 25px 20px;
-            display: flex;
+            display: flex; /* Kept as flex for default viewing state */
             flex-direction: column;
             gap: 22px;
         }
@@ -457,13 +457,13 @@
         <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='https://i.pravatar.cc/150?img=11'">
     </div>
 
-    <!-- NEW: Profile Details Overlay Page -->
+    <!-- Profile Details Overlay Page -->
     <div id="profileDetailsPage" class="page-overlay">
         <!-- Inner Header -->
         <div class="page-header">
             <i class="fa-solid fa-chevron-left" onclick="closeProfileDetails()"></i>
             <span>Profile</span>
-            <i class="fa-solid fa-code"></i> <!-- Represents the < > icon -->
+            <i class="fa-solid fa-code"></i>
         </div>
 
         <!-- Inner Profile Card -->
@@ -478,12 +478,12 @@
 
         <!-- Tabs -->
         <div class="tabs-container">
-            <div class="tab active">Personal</div>
-            <div class="tab">Academics</div>
+            <div class="tab active" id="tab-personal" onclick="switchTab('personal')">Personal</div>
+            <div class="tab" id="tab-academics" onclick="switchTab('academics')">Academics</div>
         </div>
 
         <!-- Personal Details List -->
-        <div class="details-card">
+        <div id="personal-details" class="details-card">
             <div class="detail-item">
                 <span class="detail-label">Father's Name</span>
                 <span class="detail-value">Ranjith K</span>
@@ -521,6 +521,34 @@
                 <span class="detail-value"></span>
             </div>
         </div>
+
+        <!-- Academics Details List (Hidden by default) -->
+        <div id="academics-details" class="details-card" style="display: none;">
+            <div class="detail-item">
+                <span class="detail-label">Roll Number</span>
+                <span class="detail-value">231EC241</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Registration Number</span>
+                <span class="detail-value">2310748</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Semester</span>
+                <span class="detail-value">7</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Branch</span>
+                <span class="detail-value">Electronics and Communication Engineering</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Degree</span>
+                <span class="detail-value">B Tech</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Category</span>
+                <span class="detail-value">General</span>
+            </div>
+        </div>
     </div>
     <!-- End Profile Details Overlay -->
 
@@ -538,12 +566,11 @@
     <div class="profile-card">
         <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
         <div class="profile-info">
-            <!-- Left as Shamanth P V based on the previous prompt's home screen rules -->
-            <h3>Shamanth P V</h3>
+            <!-- Consistently using R Rishadd as requested -->
+            <h3>R Rishadd</h3>
             <p>B Tech, 4th Year, 7th Semester</p>
             <p>Electronics and Communication Engineering</p>
         </div>
-        <!-- Trigger added to the arrow icon -->
         <i class="fa-solid fa-chevron-right" onclick="openProfileDetails()"></i>
     </div>
 
@@ -595,7 +622,7 @@
     <!-- Announcements Section -->
     <h2 class="section-title">Announcements</h2>
     
-    <!-- Floating Action Button (Will remain visible on both main screen and profile details) -->
+    <!-- Floating Action Button -->
     <div class="fab">
         <i class="fa-solid fa-comment"></i>
     </div>
@@ -618,9 +645,8 @@
 
 </div>
 
-<!-- JavaScript to handle screen transitions and modals -->
+<!-- JavaScript to handle screen transitions, tabs, and modals -->
 <script>
-    // Handles Full Screen Profile Image Viewer
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
     }
@@ -628,15 +654,33 @@
         document.getElementById('imageModal').style.display = 'none';
     }
 
-    // Handles the sliding transition to the new Profile Details Page
     function openProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'flex';
     }
     function closeProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'none';
     }
+
+    // Handles switching between Personal and Academics tabs
+    function switchTab(tabName) {
+        const personalTab = document.getElementById('tab-personal');
+        const academicsTab = document.getElementById('tab-academics');
+        const personalDetails = document.getElementById('personal-details');
+        const academicsDetails = document.getElementById('academics-details');
+
+        if (tabName === 'personal') {
+            personalTab.classList.add('active');
+            academicsTab.classList.remove('active');
+            personalDetails.style.display = 'flex';
+            academicsDetails.style.display = 'none';
+        } else if (tabName === 'academics') {
+            academicsTab.classList.add('active');
+            personalTab.classList.remove('active');
+            academicsDetails.style.display = 'flex';
+            personalDetails.style.display = 'none';
+        }
+    }
 </script>
 
 </body>
 </html>
-
