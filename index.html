@@ -1,3 +1,6 @@
+Here is the updated complete index.html file.
+I have added a new "Profile Details" screen that perfectly mimics image_5.png. It is built as an overlay that slides in when you click the purple right-facing arrow (>) on the home screen profile card, and you can close it by clicking the left arrow (<) in its header.
+I also ensured the Floating Action Button (chat icon) stays visible above this new screen, just like in your screenshot.
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -454,7 +457,7 @@
             <i class="fa-solid fa-chevron-left" onclick="closeImageModal()"></i>
             <span class="modal-title">student_dashboard_21622</span>
         </div>
-        <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='photo.jpg'">
+        <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='https://i.pravatar.cc/150?img=11'">
     </div>
 
     <!-- NEW: Profile Details Overlay Page -->
@@ -468,7 +471,7 @@
 
         <!-- Inner Profile Card -->
         <div class="profile-card no-arrow">
-            <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='photo.jpg'">
+            <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
             <div class="profile-info">
                 <h3>R Rishadd</h3>
                 <p>B Tech, 4th Year, 7th Semester</p>
@@ -518,7 +521,7 @@
             </div>
             <div class="detail-item">
                 <span class="detail-label">Email</span>
-                <span class="detail-value">ranjithrishadd@gmail.com</span>
+                <span class="detail-value"></span>
             </div>
         </div>
     </div>
@@ -639,3 +642,4 @@
 
 </body>
 </html>
+
