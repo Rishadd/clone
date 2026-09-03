@@ -59,6 +59,13 @@
             z-index: 10;
         }
 
+        /* Main View Wrappers */
+        .view-section {
+            display: block;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
         /* Header */
         .header {
             display: flex;
@@ -67,10 +74,17 @@
             padding: 20px 20px 10px 20px;
         }
 
+        .header-center {
+            justify-content: center;
+        }
+
         .logo {
             font-size: 32px;
             font-weight: 200;
             letter-spacing: 4px;
+        }
+
+        .header:not(.header-center) .logo {
             margin-left: 45%;
             transform: translateX(-50%);
         }
@@ -116,7 +130,6 @@
             position: relative;
         }
 
-        /* Modifiers for the inner profile card that doesn't have an arrow */
         .profile-card.no-arrow {
             margin-top: 15px;
         }
@@ -152,8 +165,8 @@
             position: absolute;
             right: 20px;
             color: var(--accent-purple);
-            cursor: pointer; /* Added cursor to show it is clickable */
-            padding: 10px; /* Increased hit area */
+            cursor: pointer; 
+            padding: 10px; 
         }
 
         /* Dashboard Area */
@@ -291,7 +304,7 @@
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 60; /* Ensure it stays above the profile page overlay */
+            z-index: 60; 
         }
 
         .fab i {
@@ -321,6 +334,7 @@
             font-size: 11px;
             cursor: pointer;
             gap: 5px;
+            width: 70px;
         }
 
         .nav-item i {
@@ -331,20 +345,118 @@
             color: var(--accent-purple);
         }
 
-        /* --- NEW: Page Overlays (Profile Details & Image Viewer) --- */
+        /* --- CATEGORIES VIEW SPECIFIC CSS --- */
+        .search-container {
+            padding: 5px 20px 20px;
+        }
+
+        .search-box {
+            background-color: var(--card-bg);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            gap: 12px;
+        }
+
+        .search-icon {
+            color: var(--accent-purple);
+            font-size: 16px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .top-cat-tabs {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px 20px;
+        }
+
+        .top-cat-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--accent-purple);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 12px 15px;
+            border-radius: 12px;
+            flex: 1;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .top-cat-tab.active {
+            background-color: var(--accent-purple);
+            color: #ffffff;
+        }
+
+        .top-cat-tab i {
+            font-size: 26px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px 20px;
+        }
+
+        .mod-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            height: 105px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .mod-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: auto;
+            line-height: 1.3;
+            max-width: 90%;
+        }
+
+        .mod-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--accent-purple);
+            font-size: 22px;
+        }
+
+        /* --- OVERLAY SCREENS CSS --- */
         
         .page-overlay {
-            display: none; /* Hidden by default */
+            display: none; 
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: var(--bg-dark);
-            z-index: 50; /* Above home screen, below modal and FAB */
+            z-index: 50; 
             overflow-y: auto;
             flex-direction: column;
-            padding-bottom: 100px; /* Space for scrolling past FAB */
+            padding-bottom: 100px; 
         }
 
         .page-header {
@@ -354,7 +466,7 @@
             padding: 20px 20px 10px 20px;
             font-size: 16px;
             font-weight: 600;
-            margin-top: 20px; /* Simulation for status bar spacing */
+            margin-top: 20px; 
         }
 
         .page-header i {
@@ -392,7 +504,7 @@
             margin: 15px 20px;
             border-radius: 12px;
             padding: 25px 20px;
-            display: flex;
+            display: flex; 
             flex-direction: column;
             gap: 22px;
         }
@@ -472,13 +584,13 @@
         <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='https://i.pravatar.cc/150?img=11'">
     </div>
 
-    <!-- NEW: Profile Details Overlay Page -->
+    <!-- Profile Details Overlay Page -->
     <div id="profileDetailsPage" class="page-overlay">
         <!-- Inner Header -->
         <div class="page-header">
             <i class="fa-solid fa-chevron-left" onclick="closeProfileDetails()"></i>
             <span>Profile</span>
-            <i class="fa-solid fa-code"></i> <!-- Represents the < > icon -->
+            <i class="fa-solid fa-code"></i>
         </div>
 
         <!-- Inner Profile Card -->
@@ -493,12 +605,12 @@
 
         <!-- Tabs -->
         <div class="tabs-container">
-            <div class="tab active">Personal</div>
-            <div class="tab">Academics</div>
+            <div class="tab active" id="tab-personal" onclick="switchTab('personal')">Personal</div>
+            <div class="tab" id="tab-academics" onclick="switchTab('academics')">Academics</div>
         </div>
 
         <!-- Personal Details List -->
-        <div class="details-card">
+        <div id="personal-details" class="details-card">
             <div class="detail-item">
                 <span class="detail-label">Father's Name</span>
                 <span class="detail-value">Ranjith K</span>
@@ -536,24 +648,57 @@
                 <span class="detail-value"></span>
             </div>
         </div>
+
+        <!-- Academics Details List (Hidden by default) -->
+        <div id="academics-details" class="details-card" style="display: none;">
+            <div class="detail-item">
+                <span class="detail-label">Roll Number</span>
+                <span class="detail-value">231EC241</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Registration Number</span>
+                <span class="detail-value">2310748</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Semester</span>
+                <span class="detail-value">7</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Branch</span>
+                <span class="detail-value">Electronics and Communication Engineering</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Degree</span>
+                <span class="detail-value">B Tech</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Category</span>
+                <span class="detail-value">General</span>
+            </div>
+        </div>
     </div>
     <!-- End Profile Details Overlay -->
 
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">iris</div>
-        <div class="bell-container">
-            <i class="fa-regular fa-bell"></i>
-            <div class="notification-dot"></div>
-        </div>
-    </header>
+    <!-- ============================================== -->
+    <!-- MAIN HOME VIEW                                 -->
+    <!-- ============================================== -->
+    <div id="homeView" class="view-section">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">iris</div>
+            <div class="bell-container">
+                <i class="fa-regular fa-bell"></i>
+                <div class="notification-dot"></div>
+            </div>
+        </header>
 
     <!-- Profile Section -->
     <h2 class="section-title">Profile</h2>
     <div class="profile-card">
         <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
         <div class="profile-info">
-            <h3>R Rishadd</h3>
+            <!-- Left as Shamanth P V based on the previous prompt's home screen rules -->
+            <h3>Shamanth P V</h3>
             <p>B Tech, 4th Year, 7th Semester</p>
             <p>Electronics and Communication Engineering</p>
         </div>
@@ -561,66 +706,198 @@
         <i class="fa-solid fa-chevron-right" onclick="openProfileDetails()"></i>
     </div>
 
-    <!-- Dashboard Section -->
-    <h2 class="section-title">Dashboard</h2>
-    <div class="dashboard-grid">
-        <div class="dash-card">
-            <div class="dash-card-header">
-                <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
-                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        <!-- Dashboard Section -->
+        <h2 class="section-title">Dashboard</h2>
+        <div class="dashboard-grid">
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+                <div class="credits-val">127</div>
+                <div class="credits-label">Major</div>
             </div>
-            <div class="credits-val">127</div>
-            <div class="credits-label">Major</div>
-        </div>
-        <div class="dash-card">
-            <div class="dash-card-header">
-                <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+                </div>
+                <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
+                <div class="credits-label">Room Number D308</div>
             </div>
-            <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
-            <div class="credits-label">Room Number D308</div>
         </div>
+
+        <!-- Courses Section -->
+        <h2 class="section-title">Courses</h2>
+        <div class="horizontal-scroll">
+            <div class="course-card">
+                <div class="course-code">EC357</div>
+                <div class="course-title">Adhoc and Sensor Networks</div>
+                <div class="course-status">Attendance not marked yet.</div>
+            </div>
+            <div class="course-card">
+                <div class="red-corner-tag"></div>
+                <div class="course-code">EC840</div>
+                <div class="course-title">Millimeter Wave Communications</div>
+                <div class="course-status">Course has been dropp...</div>
+            </div>
+        </div>
+
+        <!-- Favorite Screens Section -->
+        <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
+        <div class="horizontal-scroll">
+            <div class="fav-card-add">
+                <span>Add Favorite<br>Screens</span>
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+
+        <!-- Announcements Section -->
+        <h2 class="section-title">Announcements</h2>
     </div>
 
-    <!-- Courses Section -->
-    <h2 class="section-title">Courses</h2>
-    <div class="horizontal-scroll">
-        <div class="course-card">
-            <div class="course-code">EC357</div>
-            <div class="course-title">Adhoc and Sensor Networks</div>
-            <div class="course-status">Attendance not marked yet.</div>
+    <!-- ============================================== -->
+    <!-- CATEGORIES VIEW                                -->
+    <!-- ============================================== -->
+    <div id="categoriesView" class="view-section" style="display: none;">
+        <!-- Centered Header -->
+        <header class="header header-center">
+            <div class="logo">iris</div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search Modules">
+            </div>
         </div>
-        <div class="course-card">
-            <div class="red-corner-tag"></div>
-            <div class="course-code">EC840</div>
-            <div class="course-title">Millimeter Wave Communications</div>
-            <div class="course-status">Course has been dropp...</div>
+
+        <!-- Top Categories Sub-Tabs -->
+        <div class="top-cat-tabs">
+            <div class="top-cat-tab" id="subTabInstitute" onclick="switchCategorySubTab('institute')">
+                <i class="fa-solid fa-building-columns"></i>
+                <span>Institute</span>
+            </div>
+            <div class="top-cat-tab active" id="subTabAcademics" onclick="switchCategorySubTab('academics')">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Academics</span>
+            </div>
+            <div class="top-cat-tab" id="subTabCampus" onclick="switchCategorySubTab('campus')">
+                <i class="fa-solid fa-chess-rook"></i>
+                <span>Campus</span>
+            </div>
+        </div>
+
+        <!-- INSTITUTE GRID (Image 8) -->
+        <div id="gridInstitute" class="modules-grid" style="display: none;">
+            <div class="mod-card">
+                <span class="mod-title">Announcements</span>
+                <i class="fa-solid fa-bullhorn mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">No Dues</span>
+                <i class="fa-regular fa-file-lines mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Useful Links</span>
+                <i class="fa-solid fa-link mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">IRIS Forms</span>
+                <i class="fa-solid fa-list-check mod-icon"></i>
+            </div>
+        </div>
+
+        <!-- ACADEMICS GRID (Image 7 - with bottom 2 boxes removed) -->
+        <div id="gridAcademics" class="modules-grid">
+            <div class="mod-card">
+                <span class="mod-title">Academic Calendar</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Courses and Grades</span>
+                <i class="fa-solid fa-layer-group mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Course Registration</span>
+                <i class="fa-regular fa-clipboard mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">All Courses</span>
+                <i class="fa-solid fa-book mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Credits Tracker</span>
+                <i class="fa-solid fa-chart-column mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Grade Card</span>
+                <i class="fa-regular fa-file-lines mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Gyan</span>
+                <i class="fa-regular fa-lightbulb mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">My Timetable</span>
+                <i class="fa-solid fa-table-cells mod-icon"></i>
+            </div>
+        </div>
+
+        <!-- CAMPUS GRID (Image 9) -->
+        <div id="gridCampus" class="modules-grid" style="display: none;">
+            <div class="mod-card">
+                <span class="mod-title">Events Management</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Infrastructure Booking</span>
+                <i class="fa-solid fa-city mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Buy and Sell</span>
+                <i class="fa-solid fa-cart-shopping mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Career Development Centre</span>
+                <i class="fa-solid fa-shield-halved mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Calendar and Events (CEMS)</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Hostel Dashboard</span>
+                <i class="fa-solid fa-square-plus mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Important Contacts</span>
+                <i class="fa-regular fa-address-book mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">NITK Maps</span>
+                <i class="fa-solid fa-location-dot mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title"></span>
+                <i class="fa-solid fa-tower-broadcast mod-icon"></i>
+            </div>
+            <div class="mod-card"></div>
         </div>
     </div>
-
-    <!-- Favorite Screens Section -->
-    <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
-    <div class="horizontal-scroll">
-        <div class="fav-card-add">
-            <span>Add Favorite<br>Screens</span>
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-
-    <!-- Announcements Section -->
-    <h2 class="section-title">Announcements</h2>
     
-    <!-- Floating Action Button (Will remain visible on both main screen and profile details) -->
+    <!-- Floating Action Button (Always Visible) -->
     <div class="fab">
         <i class="fa-solid fa-comment"></i>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation (Always Visible) -->
     <nav class="bottom-nav">
-        <div class="nav-item active">
+        <div class="nav-item active" id="navHomeBtn" onclick="switchView('home')">
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" id="navCategoriesBtn" onclick="switchView('categories')">
             <i class="fa-solid fa-table-cells-large"></i>
             <span>Categories</span>
         </div>
@@ -632,9 +909,8 @@
 
 </div>
 
-<!-- JavaScript to handle screen transitions and modals -->
+<!-- JavaScript to handle screen transitions, sub-tabs, and modals -->
 <script>
-    // Handles Full Screen Profile Image Viewer
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
     }
@@ -642,15 +918,82 @@
         document.getElementById('imageModal').style.display = 'none';
     }
 
-    // Handles the sliding transition to the new Profile Details Page
     function openProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'flex';
     }
     function closeProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'none';
     }
+
+    function switchTab(tabName) {
+        const personalTab = document.getElementById('tab-personal');
+        const academicsTab = document.getElementById('tab-academics');
+        const personalDetails = document.getElementById('personal-details');
+        const academicsDetails = document.getElementById('academics-details');
+
+        if (tabName === 'personal') {
+            personalTab.classList.add('active');
+            academicsTab.classList.remove('active');
+            personalDetails.style.display = 'flex';
+            academicsDetails.style.display = 'none';
+        } else if (tabName === 'academics') {
+            academicsTab.classList.add('active');
+            personalTab.classList.remove('active');
+            academicsDetails.style.display = 'flex';
+            personalDetails.style.display = 'none';
+        }
+    }
+
+    function switchView(viewName) {
+        const homeView = document.getElementById('homeView');
+        const categoriesView = document.getElementById('categoriesView');
+        const navHomeBtn = document.getElementById('navHomeBtn');
+        const navCategoriesBtn = document.getElementById('navCategoriesBtn');
+
+        closeProfileDetails();
+
+        if (viewName === 'home') {
+            homeView.style.display = 'block';
+            categoriesView.style.display = 'none';
+            navHomeBtn.classList.add('active');
+            navCategoriesBtn.classList.remove('active');
+        } else if (viewName === 'categories') {
+            categoriesView.style.display = 'block';
+            homeView.style.display = 'none';
+            navCategoriesBtn.classList.add('active');
+            navHomeBtn.classList.remove('active');
+        }
+    }
+
+    function switchCategorySubTab(subTabName) {
+        const subTabInstitute = document.getElementById('subTabInstitute');
+        const subTabAcademics = document.getElementById('subTabAcademics');
+        const subTabCampus = document.getElementById('subTabCampus');
+
+        const gridInstitute = document.getElementById('gridInstitute');
+        const gridAcademics = document.getElementById('gridAcademics');
+        const gridCampus = document.getElementById('gridCampus');
+
+        // Reset all
+        subTabInstitute.classList.remove('active');
+        subTabAcademics.classList.remove('active');
+        subTabCampus.classList.remove('active');
+        gridInstitute.style.display = 'none';
+        gridAcademics.style.display = 'none';
+        gridCampus.style.display = 'none';
+
+        if (subTabName === 'institute') {
+            subTabInstitute.classList.add('active');
+            gridInstitute.style.display = 'grid';
+        } else if (subTabName === 'academics') {
+            subTabAcademics.classList.add('active');
+            gridAcademics.style.display = 'grid';
+        } else if (subTabName === 'campus') {
+            subTabCampus.classList.add('active');
+            gridCampus.style.display = 'grid';
+        }
+    }
 </script>
 
 </body>
 </html>
-
