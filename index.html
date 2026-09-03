@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris App Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --card-bg: #1c1c1e;
+            --text-primary: #ffffff;
+            --text-secondary: #9e9e9e;
+            --accent-purple: #7a80e8;
+            --nav-bg: #050505;
+            --alert-red: #ff453a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #222; 
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Mobile Container Simulation */
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 80px; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 10px 20px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 200;
+            letter-spacing: 4px;
+            margin-left: 45%;
+            transform: translateX(-50%);
+        }
+        
+        .bell-container {
+            position: relative;
+        }
+
+        .header .fa-bell {
+            font-size: 22px;
+            color: var(--accent-purple);
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--alert-red);
+            border-radius: 50%;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 15px 20px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background-color: var(--card-bg);
+            margin: 5px 20px 15px;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #fff;
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        }
+
+        .profile-img:active {
+            opacity: 0.7;
+        }
+
+        .profile-info h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            line-height: 1.4;
+            padding-right: 20px;
+        }
+
+        .profile-card .fa-chevron-right {
+            position: absolute;
+            right: 20px;
+            color: var(--accent-purple);
+        }
+
+        /* Dashboard Area */
+        .dashboard-grid {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .dash-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .dash-card-header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--accent-purple);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .dash-card-header i.fa-arrow-right-arrow-left {
+            font-size: 12px;
+        }
+
+        .credits-val {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .credits-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        /* Horizontal Scrollers */
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 0 20px 10px;
+            gap: 15px;
+            scrollbar-width: none; 
+        }
+        
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none; 
+        }
+
+        /* Courses Cards */
+        .course-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            min-width: 170px;
+            max-width: 170px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-code {
+            color: var(--accent-purple);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .course-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.3;
+            flex-grow: 1;
+        }
+
+        .course-status {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .red-corner-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-top: 20px solid var(--alert-red);
+        }
+
+        /* Favorite Screens */
+        .fav-card-add {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            min-width: 180px;
+            height: 80px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .fav-card-add span {
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .fav-card-add i {
+            color: var(--accent-purple);
+            font-size: 18px;
+        }
+
+        /* Floating Action Button (FAB) */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background-color: var(--accent-purple);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .fab i {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px 0;
+            border-top: 1px solid #1c1c1e;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-purple);
+        }
+
+        /* Image Viewer Modal Styles */
+        .image-modal {
+            display: none; 
+            position: absolute;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            flex-direction: column;
+        }
+
+        .modal-header-bar {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            padding-top: 40px; 
+        }
+
+        .modal-header-bar i {
+            color: var(--accent-purple);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+            margin-left: -10px;
+        }
+
+        .modal-title {
+            flex: 1;
+            text-align: center;
+            color: #d1d1d1;
+            font-size: 14px;
+            margin-right: 20px; 
+        }
+
+        .full-screen-img {
+            margin: auto 0;
+            width: 100%;
+            height: auto;
+            background-color: white;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <div id="imageModal" class="image-modal">
+        <div class="modal-header-bar">
+            <i class="fa-solid fa-chevron-left" onclick="closeImageModal()"></i>
+            <span class="modal-title">student_dashboard_21622</span>
+        </div>
+        <img src="C:\Data\iris_clone\Passport Photograph Blazer.jpg" alt="Full Profile Photo" class="full-screen-img">
+    </div>
+
+    <header class="header">
+        <div class="logo">iris</div>
+        <div class="bell-container">
+            <i class="fa-regular fa-bell"></i>
+            <div class="notification-dot"></div>
+        </div>
+    </header>
+
+    <h2 class="section-title">Profile</h2>
+    <div class="profile-card">
+        <img src="C:\Data\iris_clone\Passport Photograph Blazer.jpg" alt="Profile" class="profile-img" onclick="openImageModal()">
+        <div class="profile-info">
+            <h3>R Rishadd</h3>
+            <p>B Tech, 4th Year, 7th Semester</p>
+            <p>Electronics and Communication Engineering</p>
+        </div>
+        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <h2 class="section-title">Dashboard</h2>
+    <div class="dashboard-grid">
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+            <div class="credits-val">127</div>
+            <div class="credits-label">Major</div>
+        </div>
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+            </div>
+            <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
+            <div class="credits-label">Room Number D308</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Courses</h2>
+    <div class="horizontal-scroll">
+        <div class="course-card">
+            <div class="course-code">EC357</div>
+            <div class="course-title">Adhoc and Sensor Networks</div>
+            <div class="course-status">Attendance not marked yet.</div>
+        </div>
+        <div class="course-card">
+            <div class="red-corner-tag"></div>
+            <div class="course-code">EC840</div>
+            <div class="course-title">Millimeter Wave Communications</div>
+            <div class="course-status">Course has been dropped</div>
+        </div>
+        <div class="course-card">
+            <div class="course-code">EC801</div>
+            <div class="course-title">Logic Synthesis</div>
+            <div class="course-status">Attendance not marked yet.</div>
+        </div>
+        <div class="course-card">
+            <div class="course-code">EC446</div>
+            <div class="course-title">Sub Micron Devices</div>
+            <div class="course-status">Attendance not marked yet.</div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
+    <div class="horizontal-scroll">
+        <div class="fav-card-add">
+            <span>Add Favorite<br>Screens</span>
+            <i class="fa-solid fa-plus"></i>
+        </div>
+    </div>
+
+    <h2 class="section-title">Announcements</h2>
+    <div class="fab">
+        <i class="fa-solid fa-comment"></i>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <span>Categories</span>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-list-ul"></i>
+            <span>More</span>
+        </div>
+    </nav>
+
+</div>
+
+<script>
+    function openImageModal() {
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function closeImageModal() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
