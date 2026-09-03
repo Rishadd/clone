@@ -25,15 +25,16 @@
         }
 
         body {
-            background-color: #222; 
-            display: flex;
-            justify-content: center;
+            background-color: var(--bg-dark); 
+            display: block;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Mobile Container Simulation */
+        /* Mobile Container stretched to full screen */
         .app-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 100%;
             height: 100vh;
             background-color: var(--bg-dark);
             color: var(--text-primary);
@@ -41,7 +42,21 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding-bottom: 80px; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: none;
+        }
+
+        /* Bottom Nav fixed to the true bottom full-width */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 100%;
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 20px 0;
+            border-top: 1px solid #1c1c1e;
+            z-index: 10;
         }
 
         /* Header */
@@ -538,8 +553,7 @@
     <div class="profile-card">
         <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
         <div class="profile-info">
-            <!-- Left as Shamanth P V based on the previous prompt's home screen rules -->
-            <h3>Shamanth P V</h3>
+            <h3>R Rishadd</h3>
             <p>B Tech, 4th Year, 7th Semester</p>
             <p>Electronics and Communication Engineering</p>
         </div>
