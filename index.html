@@ -381,6 +381,7 @@
             border-radius: 12px;
             flex: 1;
             margin: 0 5px;
+            cursor: pointer;
         }
 
         .top-cat-tab.active {
@@ -681,7 +682,6 @@
         <div class="profile-card">
             <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
             <div class="profile-info">
-                <!-- Consistently using R Rishadd as requested -->
                 <h3>R Rishadd</h3>
                 <p>B Tech, 4th Year, 7th Semester</p>
                 <p>Electronics and Communication Engineering</p>
@@ -739,7 +739,7 @@
     </div>
 
     <!-- ============================================== -->
-    <!-- CATEGORIES VIEW (New screen from Image 7)      -->
+    <!-- CATEGORIES VIEW                                -->
     <!-- ============================================== -->
     <div id="categoriesView" class="view-section" style="display: none;">
         <!-- Centered Header -->
@@ -755,24 +755,44 @@
             </div>
         </div>
 
-        <!-- Top Categories Row -->
+        <!-- Top Categories Sub-Tabs -->
         <div class="top-cat-tabs">
-            <div class="top-cat-tab">
+            <div class="top-cat-tab" id="subTabInstitute" onclick="switchCategorySubTab('institute')">
                 <i class="fa-solid fa-building-columns"></i>
                 <span>Institute</span>
             </div>
-            <div class="top-cat-tab active">
+            <div class="top-cat-tab active" id="subTabAcademics" onclick="switchCategorySubTab('academics')">
                 <i class="fa-solid fa-graduation-cap"></i>
                 <span>Academics</span>
             </div>
-            <div class="top-cat-tab">
+            <div class="top-cat-tab" id="subTabCampus" onclick="switchCategorySubTab('campus')">
                 <i class="fa-solid fa-chess-rook"></i>
                 <span>Campus</span>
             </div>
         </div>
 
-        <!-- Modules Grid -->
-        <div class="modules-grid">
+        <!-- INSTITUTE GRID (Image 8) -->
+        <div id="gridInstitute" class="modules-grid" style="display: none;">
+            <div class="mod-card">
+                <span class="mod-title">Announcements</span>
+                <i class="fa-solid fa-bullhorn mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">No Dues</span>
+                <i class="fa-regular fa-file-lines mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Useful Links</span>
+                <i class="fa-solid fa-link mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">IRIS Forms</span>
+                <i class="fa-solid fa-list-check mod-icon"></i>
+            </div>
+        </div>
+
+        <!-- ACADEMICS GRID (Image 7 - with bottom 2 boxes removed) -->
+        <div id="gridAcademics" class="modules-grid">
             <div class="mod-card">
                 <span class="mod-title">Academic Calendar</span>
                 <i class="fa-regular fa-calendar-days mod-icon"></i>
@@ -791,7 +811,7 @@
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Credits Tracker</span>
-                <i class="fa-solid fa-list-check mod-icon"></i>
+                <i class="fa-solid fa-chart-column mod-icon"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Grade Card</span>
@@ -805,10 +825,45 @@
                 <span class="mod-title">My Timetable</span>
                 <i class="fa-solid fa-table-cells mod-icon"></i>
             </div>
-            <!-- Placeholders for the partially visible row -->
+        </div>
+
+        <!-- CAMPUS GRID (Image 9) -->
+        <div id="gridCampus" class="modules-grid" style="display: none;">
+            <div class="mod-card">
+                <span class="mod-title">Events Management</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Infrastructure Booking</span>
+                <i class="fa-solid fa-city mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Buy and Sell</span>
+                <i class="fa-solid fa-cart-shopping mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Career Development Centre</span>
+                <i class="fa-solid fa-shield-halved mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Calendar and Events (CEMS)</span>
+                <i class="fa-regular fa-calendar-days mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Hostel Dashboard</span>
+                <i class="fa-solid fa-square-plus mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">Important Contacts</span>
+                <i class="fa-regular fa-address-book mod-icon"></i>
+            </div>
+            <div class="mod-card">
+                <span class="mod-title">NITK Maps</span>
+                <i class="fa-solid fa-location-dot mod-icon"></i>
+            </div>
             <div class="mod-card">
                 <span class="mod-title"></span>
-                <i class="fa-regular fa-file-code mod-icon"></i>
+                <i class="fa-solid fa-tower-broadcast mod-icon"></i>
             </div>
             <div class="mod-card"></div>
         </div>
@@ -837,9 +892,8 @@
 
 </div>
 
-<!-- JavaScript to handle screen transitions, tabs, and modals -->
+<!-- JavaScript to handle screen transitions, sub-tabs, and modals -->
 <script>
-    // Handles Image Modal
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
     }
@@ -847,7 +901,6 @@
         document.getElementById('imageModal').style.display = 'none';
     }
 
-    // Handles Profile Details Overlay
     function openProfileDetails() {
         document.getElementById('profileDetailsPage').style.display = 'flex';
     }
@@ -855,7 +908,6 @@
         document.getElementById('profileDetailsPage').style.display = 'none';
     }
 
-    // Handles switching between Personal and Academics tabs
     function switchTab(tabName) {
         const personalTab = document.getElementById('tab-personal');
         const academicsTab = document.getElementById('tab-academics');
@@ -875,14 +927,12 @@
         }
     }
 
-    // Handles Main View switching (Home vs Categories)
     function switchView(viewName) {
         const homeView = document.getElementById('homeView');
         const categoriesView = document.getElementById('categoriesView');
         const navHomeBtn = document.getElementById('navHomeBtn');
         const navCategoriesBtn = document.getElementById('navCategoriesBtn');
 
-        // Always close profile overlay if navigating back from bottom bar
         closeProfileDetails();
 
         if (viewName === 'home') {
@@ -895,6 +945,35 @@
             homeView.style.display = 'none';
             navCategoriesBtn.classList.add('active');
             navHomeBtn.classList.remove('active');
+        }
+    }
+
+    function switchCategorySubTab(subTabName) {
+        const subTabInstitute = document.getElementById('subTabInstitute');
+        const subTabAcademics = document.getElementById('subTabAcademics');
+        const subTabCampus = document.getElementById('subTabCampus');
+
+        const gridInstitute = document.getElementById('gridInstitute');
+        const gridAcademics = document.getElementById('gridAcademics');
+        const gridCampus = document.getElementById('gridCampus');
+
+        // Reset all
+        subTabInstitute.classList.remove('active');
+        subTabAcademics.classList.remove('active');
+        subTabCampus.classList.remove('active');
+        gridInstitute.style.display = 'none';
+        gridAcademics.style.display = 'none';
+        gridCampus.style.display = 'none';
+
+        if (subTabName === 'institute') {
+            subTabInstitute.classList.add('active');
+            gridInstitute.style.display = 'grid';
+        } else if (subTabName === 'academics') {
+            subTabAcademics.classList.add('active');
+            gridAcademics.style.display = 'grid';
+        } else if (subTabName === 'campus') {
+            subTabCampus.classList.add('active');
+            gridCampus.style.display = 'grid';
         }
     }
 </script>
