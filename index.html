@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iris App Clone</title>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -100,6 +101,11 @@
             position: relative;
         }
 
+        /* Modifiers for the inner profile card that doesn't have an arrow */
+        .profile-card.no-arrow {
+            margin-top: 15px;
+        }
+
         .profile-img {
             width: 65px;
             height: 65px;
@@ -131,6 +137,8 @@
             position: absolute;
             right: 20px;
             color: var(--accent-purple);
+            cursor: pointer; /* Added cursor to show it is clickable */
+            padding: 10px; /* Increased hit area */
         }
 
         /* Dashboard Area */
@@ -160,10 +168,6 @@
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 12px;
-        }
-
-        .dash-card-header i.fa-arrow-right-arrow-left {
-            font-size: 12px;
         }
 
         .credits-val {
@@ -272,7 +276,7 @@
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             cursor: pointer;
-            z-index: 10;
+            z-index: 60; /* Ensure it stays above the profile page overlay */
         }
 
         .fab i {
@@ -312,7 +316,90 @@
             color: var(--accent-purple);
         }
 
-        /* Image Viewer Modal Styles */
+        /* --- NEW: Page Overlays (Profile Details & Image Viewer) --- */
+        
+        .page-overlay {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark);
+            z-index: 50; /* Above home screen, below modal and FAB */
+            overflow-y: auto;
+            flex-direction: column;
+            padding-bottom: 100px; /* Space for scrolling past FAB */
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px; /* Simulation for status bar spacing */
+        }
+
+        .page-header i {
+            color: var(--accent-purple);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            display: flex;
+            margin: 10px 20px 0;
+            border-bottom: 1px solid #2c2c2e;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-purple);
+        }
+
+        /* Details List Card */
+        .details-card {
+            background-color: var(--card-bg);
+            margin: 15px 20px;
+            border-radius: 12px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Image Viewer Modal Styles (Highest Z-index) */
         .image-modal {
             display: none; 
             position: absolute;
@@ -361,14 +448,83 @@
 
 <div class="app-container">
     
+    <!-- Image Viewer Modal Overlay -->
     <div id="imageModal" class="image-modal">
         <div class="modal-header-bar">
             <i class="fa-solid fa-chevron-left" onclick="closeImageModal()"></i>
             <span class="modal-title">student_dashboard_21622</span>
         </div>
-        <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img">
+        <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='photo.jpg'">
     </div>
 
+    <!-- NEW: Profile Details Overlay Page -->
+    <div id="profileDetailsPage" class="page-overlay">
+        <!-- Inner Header -->
+        <div class="page-header">
+            <i class="fa-solid fa-chevron-left" onclick="closeProfileDetails()"></i>
+            <span>Profile</span>
+            <i class="fa-solid fa-code"></i> <!-- Represents the < > icon -->
+        </div>
+
+        <!-- Inner Profile Card -->
+        <div class="profile-card no-arrow">
+            <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='photo.jpg'">
+            <div class="profile-info">
+                <h3>R Rishadd</h3>
+                <p>B Tech, 4th Year, 7th Semester</p>
+                <p>Electronics and Communication Engineering</p>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tab active">Personal</div>
+            <div class="tab">Academics</div>
+        </div>
+
+        <!-- Personal Details List -->
+        <div class="details-card">
+            <div class="detail-item">
+                <span class="detail-label">Father's Name</span>
+                <span class="detail-value">Ranjith K</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Date of Birth</span>
+                <span class="detail-value">12-3-2005</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Gender</span>
+                <span class="detail-value">Male</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Blood Group</span>
+                <span class="detail-value">O+</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Nationality</span>
+                <span class="detail-value">India</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Religion</span>
+                <span class="detail-value">Hindu</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Phone</span>
+                <span class="detail-value">9901033902</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Parent's Phone Number</span>
+                <span class="detail-value"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Email</span>
+                <span class="detail-value">ranjithrishadd@gmail.com</span>
+            </div>
+        </div>
+    </div>
+    <!-- End Profile Details Overlay -->
+
+    <!-- Header -->
     <header class="header">
         <div class="logo">iris</div>
         <div class="bell-container">
@@ -377,17 +533,21 @@
         </div>
     </header>
 
+    <!-- Profile Section -->
     <h2 class="section-title">Profile</h2>
     <div class="profile-card">
-        <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()">
+        <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
         <div class="profile-info">
-            <h3>R Rishadd</h3>
+            <!-- Left as Shamanth P V based on the previous prompt's home screen rules -->
+            <h3>Shamanth P V</h3>
             <p>B Tech, 4th Year, 7th Semester</p>
             <p>Electronics and Communication Engineering</p>
         </div>
-        <i class="fa-solid fa-chevron-right"></i>
+        <!-- Trigger added to the arrow icon -->
+        <i class="fa-solid fa-chevron-right" onclick="openProfileDetails()"></i>
     </div>
 
+    <!-- Dashboard Section -->
     <h2 class="section-title">Dashboard</h2>
     <div class="dashboard-grid">
         <div class="dash-card">
@@ -407,6 +567,7 @@
         </div>
     </div>
 
+    <!-- Courses Section -->
     <h2 class="section-title">Courses</h2>
     <div class="horizontal-scroll">
         <div class="course-card">
@@ -418,20 +579,11 @@
             <div class="red-corner-tag"></div>
             <div class="course-code">EC840</div>
             <div class="course-title">Millimeter Wave Communications</div>
-            <div class="course-status">Course has been dropped</div>
-        </div>
-        <div class="course-card">
-            <div class="course-code">EC801</div>
-            <div class="course-title">Logic Synthesis</div>
-            <div class="course-status">Attendance not marked yet.</div>
-        </div>
-        <div class="course-card">
-            <div class="course-code">EC446</div>
-            <div class="course-title">Sub Micron Devices</div>
-            <div class="course-status">Attendance not marked yet.</div>
+            <div class="course-status">Course has been dropp...</div>
         </div>
     </div>
 
+    <!-- Favorite Screens Section -->
     <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
     <div class="horizontal-scroll">
         <div class="fav-card-add">
@@ -440,11 +592,15 @@
         </div>
     </div>
 
+    <!-- Announcements Section -->
     <h2 class="section-title">Announcements</h2>
+    
+    <!-- Floating Action Button (Will remain visible on both main screen and profile details) -->
     <div class="fab">
         <i class="fa-solid fa-comment"></i>
     </div>
 
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="nav-item active">
             <i class="fa-solid fa-house"></i>
@@ -462,13 +618,22 @@
 
 </div>
 
+<!-- JavaScript to handle screen transitions and modals -->
 <script>
+    // Handles Full Screen Profile Image Viewer
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
     }
-
     function closeImageModal() {
         document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Handles the sliding transition to the new Profile Details Page
+    function openProfileDetails() {
+        document.getElementById('profileDetailsPage').style.display = 'flex';
+    }
+    function closeProfileDetails() {
+        document.getElementById('profileDetailsPage').style.display = 'none';
     }
 </script>
 
