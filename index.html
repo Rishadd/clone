@@ -2,13 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Locked scale to disable zooming while retaining standard scrollability -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Iris App Clone</title>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Google Sans and Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Disables pinch-zoom and double-tap zoom gestures globally while keeping scrollability */
+        html {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            background-color: var(--bg-dark); 
+            display: block;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none;
+            touch-action: pan-y; /* Permits vertical scrolling, blocks multi-touch zoom */
+        }
+
         :root {
             --bg-dark: #050505;
             --card-bg: #1c1c1e;
@@ -24,13 +42,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark); 
-            display: block;
-            margin: 0;
-            padding: 0;
         }
 
         /* Mobile Container Stretched Full Screen */
@@ -585,6 +596,7 @@
 
 <div class="app-container">
     
+    <!-- Image Viewer Modal Overlay -->
     <div id="imageModal" class="image-modal">
         <div class="modal-header-bar">
             <i class="fa-solid fa-chevron-left" onclick="closeImageModal()"></i>
@@ -593,13 +605,16 @@
         <img src="photo.jpg" alt="Full Profile Photo" class="full-screen-img" onerror="this.src='https://i.pravatar.cc/150?img=11'">
     </div>
 
+    <!-- Profile Details Overlay Page -->
     <div id="profileDetailsPage" class="page-overlay">
+        <!-- Inner Header -->
         <div class="page-header">
             <i class="fa-solid fa-chevron-left" onclick="closeProfileDetails()"></i>
             <span>Profile</span>
             <i class="fa-solid fa-code"></i>
         </div>
 
+        <!-- Inner Profile Card -->
         <div class="profile-card no-arrow">
             <img src="photo.jpg" alt="Profile" class="profile-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
             <div class="profile-info">
@@ -609,11 +624,13 @@
             </div>
         </div>
 
+        <!-- Tabs -->
         <div class="tabs-container">
             <div class="tab active" id="tab-personal" onclick="switchTab('personal')">Personal</div>
             <div class="tab" id="tab-academics" onclick="switchTab('academics')">Academics</div>
         </div>
 
+        <!-- Personal Details List -->
         <div id="personal-details" class="details-card">
             <div class="detail-item">
                 <span class="detail-label">Father's Name</span>
@@ -653,6 +670,7 @@
             </div>
         </div>
 
+        <!-- Academics Details List (Hidden by default) -->
         <div id="academics-details" class="details-card" style="display: none;">
             <div class="detail-item">
                 <span class="detail-label">Roll Number</span>
@@ -680,7 +698,13 @@
             </div>
         </div>
     </div>
+    <!-- End Profile Details Overlay -->
+
+    <!-- ============================================== -->
+    <!-- MAIN HOME VIEW                                 -->
+    <!-- ============================================== -->
     <div id="homeView" class="view-section">
+        <!-- Header -->
         <header class="header">
             <div class="header-left-space"></div>
             <div class="logo">iris</div>
@@ -690,6 +714,7 @@
             </div>
         </header>
 
+        <!-- Profile Section -->
         <h2 class="section-title">Profile</h2>
         <div class="profile-card" onclick="openProfileDetails()">
             <img src="photo.jpg" alt="Profile" class="profile-img" onclick="event.stopPropagation(); openImageModal();" onerror="this.src='https://i.pravatar.cc/150?img=11'">
@@ -701,6 +726,7 @@
             <i class="fa-solid fa-chevron-right"></i>
         </div>
 
+        <!-- Dashboard Section -->
         <h2 class="section-title">Dashboard</h2>
         <div class="dashboard-grid">
             <div class="dash-card">
@@ -720,6 +746,7 @@
             </div>
         </div>
 
+        <!-- Courses Section -->
         <h2 class="section-title">Courses</h2>
         <div class="horizontal-scroll">
             <div class="course-card">
@@ -735,6 +762,7 @@
             </div>
         </div>
 
+        <!-- Favorite Screens Section -->
         <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
         <div class="horizontal-scroll">
             <div class="fav-card-add">
@@ -743,14 +771,20 @@
             </div>
         </div>
 
+        <!-- Announcements Section -->
         <h2 class="section-title">Announcements</h2>
     </div>
 
+    <!-- ============================================== -->
+    <!-- CATEGORIES VIEW                                -->
+    <!-- ============================================== -->
     <div id="categoriesView" class="view-section" style="display: none;">
+        <!-- Centered Header -->
         <header class="header header-center">
             <div class="logo">iris</div>
         </header>
 
+        <!-- Search Bar -->
         <div class="search-container">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -758,6 +792,7 @@
             </div>
         </div>
 
+        <!-- Top Categories Sub-Tabs -->
         <div class="top-cat-tabs">
             <div class="top-cat-tab" id="subTabInstitute" onclick="switchCategorySubTab('institute')">
                 <i class="fa-solid fa-building-columns"></i>
@@ -773,6 +808,7 @@
             </div>
         </div>
 
+        <!-- INSTITUTE GRID -->
         <div id="gridInstitute" class="modules-grid" style="display: none;">
             <div class="mod-card">
                 <span class="mod-title">Announcements</span>
@@ -792,6 +828,7 @@
             </div>
         </div>
 
+        <!-- ACADEMICS GRID -->
         <div id="gridAcademics" class="modules-grid">
             <div class="mod-card">
                 <span class="mod-title">Academic Calendar</span>
@@ -827,6 +864,7 @@
             </div>
         </div>
 
+        <!-- CAMPUS GRID -->
         <div id="gridCampus" class="modules-grid" style="display: none;">
             <div class="mod-card">
                 <span class="mod-title">Events Management</span>
@@ -868,10 +906,12 @@
         </div>
     </div>
     
+    <!-- Floating Action Button (Always Visible) -->
     <div class="fab">
         <i class="fa-solid fa-comment"></i>
     </div>
 
+    <!-- Bottom Navigation (Always Visible) -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="navHomeBtn" onclick="switchView('home')">
             <i class="fa-solid fa-house"></i>
@@ -889,6 +929,7 @@
 
 </div>
 
+<!-- JavaScript to handle screen transitions, sub-tabs, and modals -->
 <script>
     function openImageModal() {
         document.getElementById('imageModal').style.display = 'flex';
