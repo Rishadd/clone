@@ -24,17 +24,20 @@
             margin: 0;
             padding: 0;
             overscroll-behavior-y: none;
-            touch-action: pan-y; /* Permits vertical scrolling, blocks multi-touch zoom */
+            touch-action: pan-y;
         }
 
         :root {
             --bg-dark: #050505;
             --card-bg: #1c1c1e;
+            --hostel-card-bg: #222225;
             --text-primary: #ffffff;
-            --text-secondary: #9e9e9e;
+            --text-secondary: #ffffff;
             --accent-purple: #7a80e8;
             --nav-bg: #050505;
             --alert-red: #ff453a;
+            --status-green: #34c759;
+            --teal-label: #4ac1e0;
         }
 
         * {
@@ -42,6 +45,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Google Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
         }
 
         /* Mobile Container Stretched Full Screen */
@@ -155,7 +159,6 @@
             opacity: 0.7;
         }
 
-        /* Exact Replica Text Layout inside Profile Box */
         .profile-info {
             display: flex;
             flex-direction: column;
@@ -198,16 +201,44 @@
             margin-bottom: 20px;
         }
 
+        /* 3D Flip Card Container */
+        .dash-card-container {
+            flex: 1;
+            perspective: 1000px;
+            min-height: 100px;
+            cursor: pointer;
+        }
+
+        .dash-card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .dash-card-container.flipped .dash-card-flipper {
+            transform: rotateY(180deg);
+        }
+
         .dash-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--card-bg);
             border-radius: 12px;
-            flex: 1;
             padding: 15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 100px;
-            position: relative;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .dash-card.back {
+            transform: rotateY(180deg);
         }
 
         .dash-card-header {
@@ -217,6 +248,12 @@
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .dash-card-header i {
+            cursor: pointer;
+            padding: 4px;
         }
 
         .credits-val {
@@ -547,6 +584,696 @@
             color: var(--text-primary);
         }
 
+        /* --- CREDITS TRACKER OVERLAY PAGE --- */
+        .tracker-top-card {
+            background-color: var(--card-bg);
+            margin: 10px 20px;
+            border-radius: 16px;
+            padding: 25px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tracker-progress-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .tracker-progress-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-purple) 0deg 291.6deg, #2c2c2e 291.6deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .tracker-progress-inner {
+            width: 106px;
+            height: 106px;
+            background-color: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracker-pct {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tracker-label-bottom {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .tracker-stats-col {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+            padding-left: 10px;
+        }
+
+        .tracker-stats-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .tracker-stats-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .tracker-legend-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-purple);
+            border-radius: 50%;
+        }
+
+        .tracker-subtabs-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px 15px;
+            border-bottom: 1px solid #2c2c2e;
+            margin-top: 10px;
+        }
+
+        .tracker-subtab {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding-bottom: 8px;
+            position: relative;
+        }
+
+        .tracker-subtab.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .tracker-subtab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-purple);
+        }
+
+        /* Category Breakdown List */
+        .tracker-category-card {
+            background-color: var(--card-bg);
+            margin: 15px 20px;
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tracker-cat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tracker-cat-pct {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .tracker-progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background-color: #2c2c2e;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .tracker-progress-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Semester Breakdown Chart */
+        .tracker-chart-card {
+            background-color: var(--card-bg);
+            margin: 15px 20px;
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chart-bars-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            height: 180px;
+            padding: 10px 10px 0 10px;
+            position: relative;
+            border-bottom: 1px solid #333;
+        }
+
+        .chart-grid-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            border-top: 1px dashed #2c2c2e;
+            pointer-events: none;
+        }
+
+        .chart-bar-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .chart-bar {
+            width: 16px;
+            background-color: var(--accent-purple);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s;
+        }
+
+        .chart-bar-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .chart-title-bottom {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 5px;
+        }
+
+        /* --- HOSTEL DASHBOARD SPECIFIC CSS --- */
+        .hostel-subtabs-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 10px 20px;
+            background-color: var(--bg-dark);
+        }
+        .hostel-subtabs-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hostel-subtabs {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            background-color: transparent;
+        }
+
+        .hostel-subtab {
+            padding: 10px 20px;
+            background-color: transparent;
+            border-radius: 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .hostel-subtab.active {
+            background-color: var(--accent-purple);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .hostel-fixed-top {
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-dark);
+            z-index: 20;
+            width: 100%;
+        }
+
+        .hostel-id-card {
+            background-color: var(--hostel-card-bg);
+            margin: 10px 20px;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+        }
+
+        .id-card-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .id-card-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #fff;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .id-card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-grow: 1;
+        }
+
+        .id-card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .id-card-hostel {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .id-card-mess {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .id-card-roll {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .id-card-actions {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .id-card-actions i {
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .authorities-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 15px 20px 10px;
+            background-color: var(--bg-dark);
+        }
+
+        .authorities-header i {
+            font-size: 15px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .authority-card {
+            background-color: var(--card-bg);
+            margin: 10px 20px;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-title {
+            font-size: 13px;
+            color: var(--teal-label);
+            font-weight: 600;
+        }
+
+        .auth-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .auth-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .auth-row i {
+            color: var(--accent-purple);
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .auth-emails, .auth-phones {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* --- MESS MENU TAB STYLES --- */
+        .mess-councillor-card {
+            background-color: var(--card-bg);
+            margin: 10px 20px 15px;
+            border-radius: 12px;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid #2c2c2e;
+        }
+
+        .councillor-title {
+            font-size: 13px;
+            color: var(--teal-label);
+            font-weight: 600;
+        }
+
+        .councillor-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .councillor-row i {
+            color: var(--accent-purple);
+            font-size: 14px;
+        }
+
+        .mess-dropdown-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-bg);
+            margin: 10px 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .mess-carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 15px;
+            padding: 10px 20px 20px;
+            scrollbar-width: none;
+            scroll-behavior: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .mess-carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .mess-menu-card {
+            background-color: var(--card-bg);
+            min-width: calc(100vw - 40px);
+            max-width: calc(100vw - 40px);
+            flex: 0 0 calc(100vw - 40px);
+            scroll-snap-align: center;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .mess-date-header {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2c2c2e;
+        }
+
+        .meal-box {
+            background-color: #222225;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .meal-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--teal-label);
+        }
+
+        .meal-time {
+            font-size: 12px;
+            color: #ff9f0a;
+            font-weight: 600;
+        }
+
+        .meal-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* --- ALLOTMENTS TAB STYLES --- */
+        .allotment-subtabs-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px 20px;
+            border-bottom: 1px solid #2c2c2e;
+        }
+
+        .allotment-subtab {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding-bottom: 8px;
+            position: relative;
+        }
+
+        .allotment-subtab.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .allotment-subtab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-purple);
+        }
+
+        .timeline-container {
+            padding: 30px 10px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 115px 36px 1fr;
+            align-items: flex-start;
+            margin-bottom: 36px;
+            position: relative;
+        }
+
+        .timeline-time {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding-right: 14px;
+            line-height: 1.4;
+        }
+
+        .timeline-track {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: -36px;
+            width: 4px;
+            background-color: var(--accent-purple);
+            border-radius: 2px;
+        }
+
+        .timeline-item:last-child .timeline-track::before {
+            bottom: 10px;
+        }
+
+        .timeline-node {
+            position: relative;
+            z-index: 2;
+            width: 18px;
+            height: 18px;
+            background-color: var(--bg-dark);
+            border: 3px solid var(--accent-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .timeline-node::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent-purple);
+            border-radius: 50%;
+        }
+
+        .timeline-content {
+            padding-left: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .timeline-semester {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline-desc {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-allocated {
+            color: var(--status-green) !important;
+        }
+
+        .status-deallocated {
+            color: var(--alert-red) !important;
+        }
+
+        /* --- MESS FINANCE TAB STYLES --- */
+        .finance-balance-card {
+            text-align: center;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .finance-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--status-green);
+        }
+
+        .finance-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .finance-filters-row {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px;
+            align-items: center;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .finance-filters-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .finance-pill {
+            padding: 8px 18px;
+            background-color: transparent;
+            border: 1px solid var(--accent-purple);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .finance-pill.active {
+            background-color: var(--accent-purple);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .finance-year-dropdown {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px 12px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+        }
+
         /* Image Viewer Modal Styles (Highest Z-index) */
         .image-modal {
             display: none; 
@@ -701,6 +1428,515 @@
     <!-- End Profile Details Overlay -->
 
     <!-- ============================================== -->
+    <!-- CREDITS TRACKER OVERLAY PAGE                   -->
+    <!-- ============================================== -->
+    <div id="creditsTrackerPage" class="page-overlay">
+        <div class="page-header">
+            <i class="fa-solid fa-chevron-left" onclick="closeCreditsTracker()"></i>
+            <span>Credits Tracker</span>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <i class="fa-solid fa-file-pdf" style="font-size: 18px;"></i>
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+        </div>
+
+        <!-- Top Progress Summary Card -->
+        <div class="tracker-top-card">
+            <div class="tracker-progress-container">
+                <div class="tracker-progress-ring">
+                    <div class="tracker-progress-inner">
+                        <span class="tracker-pct">81.0%</span>
+                    </div>
+                </div>
+                <div class="tracker-label-bottom">Credits Completed</div>
+            </div>
+            <div class="tracker-stats-col">
+                <div class="tracker-stats-title">Total<br>Credits</div>
+                <div class="tracker-stats-sub">
+                    <div class="tracker-legend-dot"></div>
+                    <span>Major<br>131/161</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtabs: Semester Breakdown vs Category Breakdown -->
+        <div class="tracker-subtabs-row">
+            <div class="tracker-subtab active" id="trackerSubSem" onclick="switchTrackerSubTab('semester')">Semester Breakdown</div>
+            <div class="tracker-subtab" id="trackerSubCat" onclick="switchTrackerSubTab('category')">Category Breakdown</div>
+        </div>
+
+        <!-- SEMESTER BREAKDOWN VIEW (Chart) -->
+        <div id="trackerSectionSem" class="tracker-content-section">
+            <div class="tracker-chart-card">
+                <div class="chart-bars-area">
+                    <div class="chart-grid-line" style="top: 0px;"></div>
+                    <div class="chart-grid-line" style="top: 36px;"></div>
+                    <div class="chart-grid-line" style="top: 72px;"></div>
+                    <div class="chart-grid-line" style="top: 108px;"></div>
+                    <div class="chart-grid-line" style="top: 144px;"></div>
+                    
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 145px;"></div><span class="chart-bar-label">1</span></div>
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 130px;"></div><span class="chart-bar-label">2</span></div>
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 120px;"></div><span class="chart-bar-label">3</span></div>
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 170px;"></div><span class="chart-bar-label">4</span></div>
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 138px;"></div><span class="chart-bar-label">5</span></div>
+                    <div class="chart-bar-col"><div class="chart-bar" style="height: 115px;"></div><span class="chart-bar-label">6</span></div>
+                </div>
+                <div class="chart-title-bottom">Credits vs Semesters</div>
+            </div>
+        </div>
+
+        <!-- CATEGORY BREAKDOWN VIEW (List) -->
+        <div id="trackerSectionCat" class="tracker-content-section" style="display: none;">
+            <div class="tracker-category-card">
+                <div class="tracker-cat-header">
+                    <span>Program Core</span>
+                    <span class="tracker-cat-pct" style="color: var(--status-green);">100.00%</span>
+                </div>
+                <div class="tracker-progress-bar-bg">
+                    <div class="tracker-progress-bar-fill" style="width: 100%; background-color: var(--status-green);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    <span></span>
+                    <span>Credits Earned: 62/62</span>
+                </div>
+            </div>
+
+            <div class="tracker-category-card">
+                <div class="tracker-cat-header">
+                    <span>Mandatory Learning Course</span>
+                    <span class="tracker-cat-pct" style="color: var(--alert-red);">31.25%</span>
+                </div>
+                <div class="tracker-progress-bar-bg">
+                    <div class="tracker-progress-bar-fill" style="width: 31.25%; background-color: var(--alert-red);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    <span></span>
+                    <span>Credits Earned: 5/16</span>
+                </div>
+            </div>
+
+            <div class="tracker-category-card">
+                <div class="tracker-cat-header">
+                    <span>Major Project</span>
+                    <span class="tracker-cat-pct" style="color: var(--text-secondary);">0.00%</span>
+                </div>
+                <div class="tracker-progress-bar-bg">
+                    <div class="tracker-progress-bar-fill" style="width: 0%; background-color: #555;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    <span></span>
+                    <span>Credits Earned: 0/6</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Credits Tracker Page -->
+
+    <!-- ============================================== -->
+    <!-- HOSTEL DASHBOARD OVERLAY PAGE                  -->
+    <!-- ============================================== -->
+    <div id="hostelDashboardPage" class="page-overlay">
+        
+        <!-- Fixed Top Header + Subtabs -->
+        <div class="hostel-fixed-top">
+            <div class="page-header" style="margin-top: 0; padding-bottom: 5px;">
+                <i class="fa-solid fa-chevron-left" onclick="closeHostelDashboard()"></i>
+                <span>Hostel Dashboard</span>
+                <i class="fa-solid fa-code"></i>
+            </div>
+
+            <div class="hostel-subtabs-wrapper">
+                <div class="hostel-subtabs">
+                    <div class="hostel-subtab active" id="hSubHome" onclick="switchHostelTab('home')">Home</div>
+                    <div class="hostel-subtab" id="hSubMess" onclick="switchHostelTab('mess')">Mess Menu</div>
+                    <div class="hostel-subtab" id="hSubAllotments" onclick="switchHostelTab('allotments')">Allotments</div>
+                    <div class="hostel-subtab" id="hSubComplaints" onclick="switchHostelTab('complaints')">Complaints</div>
+                    <div class="hostel-subtab" id="hSubFinance" onclick="switchHostelTab('finance')">Mess Finance</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1: HOME -->
+        <div id="hostelTabHome" class="hostel-tab-content">
+            <div class="hostel-id-card">
+                <div class="section-title" style="padding: 0 0 5px 0; font-size: 15px; color: var(--text-primary);">Hostel & Mess ID Card</div>
+                <div class="id-card-top">
+                    <img src="photo.jpg" alt="Profile" class="id-card-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
+                    <div class="id-card-details">
+                        <div class="id-card-name">R Rishadd</div>
+                        <div class="id-card-hostel">Kailash (MT-III) Room<br>D308</div>
+                        <div class="id-card-mess" style="margin-top: 4px;">Block IV Mess (Block IV)</div>
+                    </div>
+                </div>
+                <div class="id-card-roll">231EC241</div>
+                
+                <div class="id-card-actions">
+                    <i class="fa-solid fa-download"></i>
+                    <i class="fa-solid fa-download" style="margin-top: 15px;"></i>
+                </div>
+            </div>
+
+            <div class="authorities-header">
+                <span>Hostel Authorities Contacts</span>
+                <i class="fa-regular fa-circle-question"></i>
+            </div>
+
+            <div class="authority-card">
+                <div class="auth-title">Q&M Warden</div>
+                <div class="auth-name">Sandi Kumar Reddy</div>
+                <div class="auth-row">
+                    <i class="fa-regular fa-envelope"></i>
+                    <div class="auth-emails">
+                        <span>skreddy@nitk.edu.in</span>
+                        <span>skreddy@nitk.edu.in</span>
+                    </div>
+                </div>
+                <div class="auth-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <div class="auth-phones">
+                        <span>9448721700</span>
+                        <span>08242473395</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="authority-card">
+                <div class="auth-title">Hostel Block Warden</div>
+                <div class="auth-name">Abhilash M H</div>
+                <div class="auth-row">
+                    <i class="fa-regular fa-envelope"></i>
+                    <div class="auth-emails">
+                        <span>abhi@nitk.edu.in</span>
+                    </div>
+                </div>
+                <div class="auth-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <div class="auth-phones">
+                        <span>9008712681</span>
+                        <span>+91-824-247300</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="authority-card">
+                <div class="auth-title">Hostel Block Warden</div>
+                <div class="auth-name">VIJAYA VENGADESH KUMAR J</div>
+                <div class="auth-row">
+                    <i class="fa-regular fa-envelope"></i>
+                    <div class="auth-emails">
+                        <span>vj@nitk.edu.in</span>
+                        <span>vj@nitk.edu.in</span>
+                    </div>
+                </div>
+                <div class="auth-row">
+                    <i class="fa-solid fa-phone"></i>
+                    <div class="auth-phones">
+                        <span>9786198855</span>
+                        <span>0824-2473041</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: MESS MENU -->
+        <div id="hostelTabMess" class="hostel-tab-content" style="display: none;">
+            <div class="mess-councillor-card">
+                <div class="councillor-title">Mess Councillor Details:</div>
+                <div class="councillor-row">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Vishnu Bendigeri</span>
+                </div>
+                <div class="councillor-row">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>vishnu.23ime361@nitk.edu.in</span>
+                </div>
+            </div>
+
+            <div class="mess-dropdown-banner">
+                <span>Block IV Mess</span>
+                <i class="fa-solid fa-chevron-down" style="color: var(--accent-purple);"></i>
+            </div>
+
+            <!-- Circular Infinite Snapping Carousel Container -->
+            <div class="mess-carousel-container" id="messCarousel">
+                
+                <!-- Set 1 (Cloned Prepend for Infinite Circular Scrolling) -->
+                <div class="mess-menu-card" data-card-id="sat-clone">
+                    <div class="mess-date-header">Saturday<br>3/10/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">08:00-09:30</span></div>
+                        <div class="meal-desc">Aloo Paratha (2), Curd, Pickle, Bread, Butter, Jam And Ketchup, Tea/coffee, Milk With Bourn Vita, Egg Bhurji</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Rice (white & Boiled), Seasonal Veg Dry, Veg Kolhapuri, Sambhar, Curd, Salad, Chana Dal Tadka,</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Mysore Bonda (3), Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Sunday 27/9/2026 -->
+                <div class="mess-menu-card" data-card-id="sun">
+                    <div class="mess-date-header">Sunday<br>27/9/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">08:00-09:30</span></div>
+                        <div class="meal-desc">Masala Dosa(1), Set Dosa(1), Chutney-sambar, Bread, Butter, Jam, Oats, Tea/coffee, Milk With Bourn Vita, Seasonal Fruits</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Rice (white & Boiled), Dal Fry, Tondekai Palya, Sambhar, Soyabean Masala, Curd, Papad, Salad, Sewai Kheer</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Samosa, Chutney, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Tuesday 29/9/2026 -->
+                <div class="mess-menu-card" data-card-id="tue">
+                    <div class="mess-date-header">Tuesday<br>29/9/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">7:00-9:30</span></div>
+                        <div class="meal-desc">Poori (4), Bhaji, Bread, Butter, Jam, Tea/coffee, Milk With Bourn Vita, Mix Sprouts (moong, Peanuts, Grams), Boiled Egg(1)</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Veg Pulao, Rice (white & Boiled), Yellow Dal, Sambhar, Beetroot Palya, Rajma Masala, Raita, Salad, Gulab Jamun</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Veg Sevai Upma, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Wednesday 30/9/2026 -->
+                <div class="mess-menu-card" data-card-id="wed">
+                    <div class="mess-date-header">Wednesday<br>30/9/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">7:00-9:30</span></div>
+                        <div class="meal-desc">Upma-shira, Chutney, Bread, Butter, Jam, Oats, Tea/coffee, Milk With Bourn Vita, Banana, Boiled Egg(1)</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Methi Poori, Rice (white & Boiled), Sambhar, Aloo Shimla, Kabuli Chana Masala, Dal Fry, Papad, Chaas, Salad, Ice Cream(chocolate)</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Veg Cutlet, Sauce, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Thursday 1/10/2026 -->
+                <div class="mess-menu-card" data-card-id="thu">
+                    <div class="mess-date-header">Thursday<br>1/10/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">7:00-9:30</span></div>
+                        <div class="meal-desc">Onion Utthappam (1), Set Dosa(1), Chutney, Bread, Butter, Jam, Tea/coffee, Milk With Bourn Vita, Mix Sprouts (moong, Peanuts, Grams), Boiled Egg(1)</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Rice (white & Boiled), Veg Chawali Masala, Mixed Veg Dry, Sambhar, Curd, Pickle, Salad.</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Pani Puri(6)/sev Puri, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Friday 2/10/2026 -->
+                <div class="mess-menu-card" data-card-id="fri">
+                    <div class="mess-date-header">Friday<br>2/10/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">7:00-9:30</span></div>
+                        <div class="meal-desc">Poha-peanuts, Chutney, Bread, Butter, Jam, Cornflakes, Tea/coffee, Milk With Bourn Vita, Single Egg Omelet</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Poori (unlimited), Jeera Rice, Rice (white & Boiled), Sambhar, Mutter Palak Masala, Dal Tadka, Lauki Dry, Buttermilk, Pickle, Papad, Salad, Ice Cream (special)</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Goli Bajji(4), Chutney, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Saturday 3/10/2026 -->
+                <div class="mess-menu-card" data-card-id="sat">
+                    <div class="mess-date-header">Saturday<br>3/10/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">08:00-09:30</span></div>
+                        <div class="meal-desc">Aloo Paratha (2), Curd, Pickle, Bread, Butter, Jam And Ketchup, Tea/coffee, Milk With Bourn Vita, Egg Bhurji</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Rice (white & Boiled), Seasonal Veg Dry, Veg Kolhapuri, Sambhar, Curd, Salad, Chana Dal Tadka,</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Mysore Bonda (3), Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+                <!-- Set 2 (Cloned Append for Infinite Circular Scrolling) -->
+                <div class="mess-menu-card" data-card-id="sun-clone">
+                    <div class="mess-date-header">Sunday<br>27/9/2026</div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Breakfast</span><span class="meal-time">08:00-09:30</span></div>
+                        <div class="meal-desc">Masala Dosa(1), Set Dosa(1), Chutney-sambar, Bread, Butter, Jam, Oats, Tea/coffee, Milk With Bourn Vita, Seasonal Fruits</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Lunch</span><span class="meal-time">12:00-14:00</span></div>
+                        <div class="meal-desc">Wheat Chapathi*, Rice (white & Boiled), Dal Fry, Tondekai Palya, Sambhar, Soyabean Masala, Curd, Papad, Salad, Sewai Kheer</div>
+                    </div>
+                    <div class="meal-box">
+                        <div class="meal-title-row"><span class="meal-name">Snacks</span><span class="meal-time">16:30-18:00</span></div>
+                        <div class="meal-desc">Samosa, Chutney, Bread, Butter, Jam, Tea, Coffee</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 3: ALLOTMENTS -->
+        <div id="hostelTabAllotments" class="hostel-tab-content" style="display: none;">
+            <div class="allotment-subtabs-row">
+                <div class="allotment-subtab" id="allotSubMess" onclick="switchAllotmentSubTab('mess')">Mess Allotment</div>
+                <div class="allotment-subtab active" id="allotSubHostel" onclick="switchAllotmentSubTab('hostel')">Hostel Allotment</div>
+            </div>
+
+            <!-- MESS ALLOTMENT TIMELINE -->
+            <div id="timelineMess" class="timeline-container" style="display: none;">
+                <div class="timeline-item">
+                    <div class="timeline-time">15-07-2026<br>10:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">Semester - 7</span>
+                        <span class="timeline-desc">Block IV Mess (Block IV)</span>
+                        <span class="timeline-desc status-allocated">Allocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">09-05-2026<br>06:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">Semester - 6</span>
+                        <span class="timeline-desc">Block IV Mess (Block IV)</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">01-01-2026<br>10:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">Semester - 6</span>
+                        <span class="timeline-desc">Block IV Mess (Block IV)</span>
+                        <span class="timeline-desc status-allocated">Allocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">01-12-2025<br>15:56</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">Semester - 5</span>
+                        <span class="timeline-desc">Mega Mess (Near Mega Tower)</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">17-07-2025<br>10:33</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">Semester - 5</span>
+                        <span class="timeline-desc">Mega Mess (Near Mega Tower)</span>
+                        <span class="timeline-desc status-allocated">Allocated</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOSTEL ALLOTMENT TIMELINE -->
+            <div id="timelineHostel" class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-time">15-07-2026<br>10:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">D308</span>
+                        <span class="timeline-desc">Kailash (MT-III)</span>
+                        <span class="timeline-desc status-allocated">Allocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">17-7-2025<br>10:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">D309</span>
+                        <span class="timeline-desc">Kailash (MT-III)</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">18-7-2024<br>17:30</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">411</span>
+                        <span class="timeline-desc">Shivalik</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">22-9-2023<br>12:24</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">246</span>
+                        <span class="timeline-desc">Sahyadri (Block VII)</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">19-8-2023<br>11:42</div>
+                    <div class="timeline-track"><div class="timeline-node"></div></div>
+                    <div class="timeline-content">
+                        <span class="timeline-semester">212</span>
+                        <span class="timeline-desc">Sahyadri (Block VII)</span>
+                        <span class="timeline-desc status-deallocated">Deallocated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: COMPLAINTS -->
+        <div id="hostelTabComplaints" class="hostel-tab-content" style="display: none;">
+            <div class="details-card" style="text-align: center; color: var(--text-secondary); padding: 40px 20px;">
+                <p>No complaints registered.</p>
+            </div>
+        </div>
+
+        <!-- TAB 5: MESS FINANCE -->
+        <div id="hostelTabFinance" class="hostel-tab-content" style="display: none;">
+            <div class="finance-balance-card">
+                <div class="finance-amount">₹ 22561.0</div>
+                <div class="finance-label">Current Mess Balance</div>
+            </div>
+            <div class="finance-filters-row">
+                <div class="finance-pill active">Jan-Apr</div>
+                <div class="finance-pill">May-Aug</div>
+                <div class="finance-pill">Sep-Dec</div>
+                <div class="finance-year-dropdown">
+                    <span>2026</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+                </div>
+            </div>
+            <div class="details-card" style="text-align: center; color: var(--text-secondary); padding: 40px 20px;">
+                <p>No transactions</p>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Hostel Dashboard Page -->
+
+    <!-- ============================================== -->
     <!-- MAIN HOME VIEW                                 -->
     <!-- ============================================== -->
     <div id="homeView" class="view-section">
@@ -729,20 +1965,39 @@
         <!-- Dashboard Section -->
         <h2 class="section-title">Dashboard</h2>
         <div class="dashboard-grid">
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <span>Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px;"></i></span>
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <!-- 3D Flip Credits Card (Clicking body opens Credits Tracker, arrow flips card) -->
+            <div class="dash-card-container" id="creditsCardContainer" onclick="openCreditsTracker()">
+                <div class="dash-card-flipper">
+                    <!-- FRONT SIDE (Credits) -->
+                    <div class="dash-card front">
+                        <div class="dash-card-header">
+                            <span style="color: var(--accent-purple);">Credits <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px; color: var(--accent-purple);"></i></span>
+                            <i class="fa-solid fa-arrow-right-arrow-left" onclick="toggleCreditsCard(event)"></i>
+                        </div>
+                        <div class="credits-val">131</div>
+                        <div class="credits-label">Major</div>
+                    </div>
+                    <!-- BACK SIDE (CGPA) -->
+                    <div class="dash-card back">
+                        <div class="dash-card-header">
+                            <span style="color: var(--accent-purple);">CGPA <i class="fa-solid fa-chart-column" style="font-size:12px; margin-left:4px; color: var(--accent-purple);"></i></span>
+                            <i class="fa-solid fa-arrow-right-arrow-left" onclick="toggleCreditsCard(event)"></i>
+                        </div>
+                        <div class="credits-val">8.4</div>
+                        <div class="credits-label">Major</div>
+                    </div>
                 </div>
-                <div class="credits-val">131</div>
-                <div class="credits-label">Major</div>
             </div>
-            <div class="dash-card">
-                <div class="dash-card-header">
-                    <span>Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px;"></i></span>
+
+            <!-- Hostel card clickable to open Hostel Dashboard -->
+            <div class="dash-card-container" onclick="openHostelDashboard()">
+                <div class="dash-card" style="position: relative;">
+                    <div class="dash-card-header">
+                        <span style="color: var(--accent-purple);">Hostel <i class="fa-regular fa-building" style="font-size:12px; margin-left:4px; color: var(--accent-purple);"></i></span>
+                    </div>
+                    <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
+                    <div class="credits-label">Room Number D308</div>
                 </div>
-                <div class="credits-val" style="font-size: 15px;">Kailash (MT-III)</div>
-                <div class="credits-label">Room Number D309</div>
             </div>
         </div>
 
@@ -846,7 +2101,8 @@
                 <span class="mod-title">All Courses</span>
                 <i class="fa-solid fa-book mod-icon"></i>
             </div>
-            <div class="mod-card">
+            <!-- Clicking My Credits Tracker opens Credits Tracker Page -->
+            <div class="mod-card" onclick="openCreditsTracker()">
                 <span class="mod-title">My Credits Tracker</span>
                 <i class="fa-solid fa-chart-column mod-icon"></i>
             </div>
@@ -886,7 +2142,7 @@
                 <span class="mod-title">Calendar and Events (CEMS)</span>
                 <i class="fa-regular fa-calendar-days mod-icon"></i>
             </div>
-            <div class="mod-card">
+            <div class="mod-card" onclick="openHostelDashboard()">
                 <span class="mod-title">Hostel Dashboard</span>
                 <i class="fa-solid fa-square-plus mod-icon"></i>
             </div>
@@ -945,6 +2201,78 @@
         document.getElementById('profileDetailsPage').style.display = 'none';
     }
 
+    function openCreditsTracker() {
+        document.getElementById('creditsTrackerPage').style.display = 'flex';
+    }
+    function closeCreditsTracker() {
+        document.getElementById('creditsTrackerPage').style.display = 'none';
+    }
+
+    function openHostelDashboard() {
+        document.getElementById('hostelDashboardPage').style.display = 'flex';
+        setTimeout(initMessCarousel, 50);
+    }
+    function closeHostelDashboard() {
+        document.getElementById('hostelDashboardPage').style.display = 'none';
+    }
+
+    // Toggle 3D Flip Card for Credits / CGPA
+    function toggleCreditsCard(event) {
+        event.stopPropagation();
+        const container = document.getElementById('creditsCardContainer');
+        container.classList.toggle('flipped');
+    }
+
+    // Credits Tracker Sub-tabs (Semester vs Category)
+    function switchTrackerSubTab(subTabName) {
+        const subSem = document.getElementById('trackerSubSem');
+        const subCat = document.getElementById('trackerSubCat');
+        const secSem = document.getElementById('trackerSectionSem');
+        const secCat = document.getElementById('trackerSectionCat');
+
+        subSem.classList.remove('active');
+        subCat.classList.remove('active');
+        secSem.style.display = 'none';
+        secCat.style.display = 'none';
+
+        if (subTabName === 'semester') {
+            subSem.classList.add('active');
+            secSem.style.display = 'block';
+        } else if (subTabName === 'category') {
+            subCat.classList.add('active');
+            secCat.style.display = 'block';
+        }
+    }
+
+    // Infinite Circular Carousel Scroll Handler
+    const carousel = document.getElementById('messCarousel');
+    let isInitialized = false;
+
+    function initMessCarousel() {
+        if (!carousel || isInitialized) return;
+        const firstRealCard = carousel.querySelector('[data-card-id="sun"]');
+        if (firstRealCard) {
+            carousel.scrollLeft = firstRealCard.offsetLeft - carousel.offsetLeft - 20;
+            isInitialized = true;
+        }
+    }
+
+    if (carousel) {
+        carousel.addEventListener('scroll', () => {
+            const scrollLeft = carousel.scrollLeft;
+            const cardWidth = carousel.querySelector('.mess-menu-card').offsetWidth + 15;
+            
+            if (scrollLeft <= 5) {
+                const targetCard = carousel.querySelector('[data-card-id="sat"]');
+                carousel.scrollLeft = targetCard.offsetLeft - carousel.offsetLeft - 20;
+            } 
+            else if (scrollLeft >= cardWidth * 6 - 10) {
+                const targetCard = carousel.querySelector('[data-card-id="sun"]');
+                carousel.scrollLeft = targetCard.offsetLeft - carousel.offsetLeft - 20;
+            }
+        });
+    }
+
     function switchTab(tabName) {
         const personalTab = document.getElementById('tab-personal');
         const academicsTab = document.getElementById('tab-academics');
@@ -964,6 +2292,69 @@
         }
     }
 
+    function switchHostelTab(tabName) {
+        const hSubHome = document.getElementById('hSubHome');
+        const hSubMess = document.getElementById('hSubMess');
+        const hSubAllotments = document.getElementById('hSubAllotments');
+        const hSubComplaints = document.getElementById('hSubComplaints');
+        const hSubFinance = document.getElementById('hSubFinance');
+
+        const hostelTabHome = document.getElementById('hostelTabHome');
+        const hostelTabMess = document.getElementById('hostelTabMess');
+        const hostelTabAllotments = document.getElementById('hostelTabAllotments');
+        const hostelTabComplaints = document.getElementById('hostelTabComplaints');
+        const hostelTabFinance = document.getElementById('hostelTabFinance');
+
+        hSubHome.classList.remove('active');
+        hSubMess.classList.remove('active');
+        hSubAllotments.classList.remove('active');
+        hSubComplaints.classList.remove('active');
+        hSubFinance.classList.remove('active');
+
+        hostelTabHome.style.display = 'none';
+        hostelTabMess.style.display = 'none';
+        hostelTabAllotments.style.display = 'none';
+        hostelTabComplaints.style.display = 'none';
+        hostelTabFinance.style.display = 'none';
+
+        if (tabName === 'home') {
+            hSubHome.classList.add('active');
+            hostelTabHome.style.display = 'block';
+        } else if (tabName === 'mess') {
+            hSubMess.classList.add('active');
+            hostelTabMess.style.display = 'block';
+            setTimeout(initMessCarousel, 50);
+        } else if (tabName === 'allotments') {
+            hSubAllotments.classList.add('active');
+            hostelTabAllotments.style.display = 'block';
+        } else if (tabName === 'complaints') {
+            hSubComplaints.classList.add('active');
+            hostelTabComplaints.style.display = 'block';
+        } else if (tabName === 'finance') {
+            hSubFinance.classList.add('active');
+            hostelTabFinance.style.display = 'block';
+        }
+    }
+
+    function switchAllotmentSubTab(subTabName) {
+        const allotSubMess = document.getElementById('allotSubMess');
+        const allotSubHostel = document.getElementById('allotSubHostel');
+        const timelineMess = document.getElementById('timelineMess');
+        const timelineHostel = document.getElementById('timelineHostel');
+
+        if (subTabName === 'mess') {
+            allotSubMess.classList.add('active');
+            allotSubHostel.classList.remove('active');
+            timelineMess.style.display = 'block';
+            timelineHostel.style.display = 'none';
+        } else if (subTabName === 'hostel') {
+            allotSubHostel.classList.add('active');
+            allotSubMess.classList.remove('active');
+            timelineHostel.style.display = 'block';
+            timelineMess.style.display = 'none';
+        }
+    }
+
     function switchView(viewName) {
         const homeView = document.getElementById('homeView');
         const categoriesView = document.getElementById('categoriesView');
@@ -971,6 +2362,8 @@
         const navCategoriesBtn = document.getElementById('navCategoriesBtn');
 
         closeProfileDetails();
+        closeHostelDashboard();
+        closeCreditsTracker();
 
         if (viewName === 'home') {
             homeView.style.display = 'block';
@@ -994,7 +2387,6 @@
         const gridAcademics = document.getElementById('gridAcademics');
         const gridCampus = document.getElementById('gridCampus');
 
-        // Reset all
         subTabInstitute.classList.remove('active');
         subTabAcademics.classList.remove('active');
         subTabCampus.classList.remove('active');
