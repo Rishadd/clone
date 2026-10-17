@@ -1573,9 +1573,728 @@
             background-color: white;
             object-fit: contain;
         }
+
+        /* ======================================================= */
+        /* ADDITIONS: logo image, splash, skeletons, new screens    */
+        /* ======================================================= */
+
+        /* Light theme (Settings > Light / System) */
+        :root[data-theme="light"] {
+            --bg-dark: #f4f4f7;
+            --card-bg: #ffffff;
+            --hostel-card-bg: #ececf1;
+            --header-band: #e9e9f0;
+            --text-primary: #16161a;
+            --text-secondary: #16161a;
+            --nav-bg: #f4f4f7;
+            --ring-track: #cfd6e6;
+        }
+
+        :root[data-theme="light"] .logo-img,
+        :root[data-theme="light"] .splash-purple img { filter: none; }
+        :root[data-theme="light"] .logo-img { filter: invert(1); }
+        :root[data-theme="light"] .meal-box,
+        :root[data-theme="light"] .timeline-node { background-color: #ececf1; }
+        :root[data-theme="light"] .nav-item { color: #16161a; }
+        :root[data-theme="light"] .skel { background: linear-gradient(100deg, #e6e6ec 30%, #f4f4f8 50%, #e6e6ec 70%); background-size: 200% 100%; }
+
+        .logo-img {
+            height: 35px;
+            width: auto;
+            display: block;
+            justify-self: center;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .home-header {
+            display: grid;
+            grid-template-columns: 48px 1fr 48px;
+            align-items: center;
+            height: 56px;
+            padding: 0 12px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background-color: var(--bg-dark);
+            transition: background-color 0.2s;
+        }
+
+        .home-header.scrolled {
+            background-color: var(--header-band);
+        }
+
+        .home-header .fa-bell {
+            font-size: 22px;
+            color: var(--accent-purple);
+        }
+
+        .home-header .bell-container {
+            justify-self: end;
+            cursor: pointer;
+            padding: 8px 4px 8px 12px;
+            grid-column: 3;
+        }
+
+        .home-content {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .home-content .section-title:first-child {
+            padding-top: 6px;
+        }
+
+        .star-ic {
+            width: 21px;
+            height: 21px;
+            vertical-align: middle;
+        }
+
+        .dash-divider {
+            width: 3px;
+            align-self: stretch;
+            margin: 0 -4px;
+            background-color: #2a2a2d;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Courses cards (centered text when there is no attendance yet) */
+        .course-card {
+            cursor: pointer;
+            min-height: 108px;
+        }
+
+        .course-card.no-att .course-title {
+            text-align: center;
+            font-weight: 400;
+            align-self: stretch;
+        }
+
+        .course-card.no-att .course-status {
+            text-align: center;
+            font-size: 10.5px;
+            opacity: 0.9;
+        }
+
+        .course-title {
+            font-weight: 400;
+        }
+
+        .att-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+        }
+
+        .att-row b { font-weight: 600; color: #e8761e; }
+        .att-bar { height: 4px; border-radius: 2px; background: #4a4a4a; overflow: hidden; }
+        .att-bar i { display: block; height: 100%; background: #e8761e; }
+
+        /* Announcements */
+        .announce-card {
+            margin: 0 20px;
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 15px 16px 13px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .announce-tag {
+            color: var(--accent-purple);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .announce-title {
+            font-size: 13.5px;
+            font-weight: 500;
+            line-height: 1.45;
+            padding-right: 52px;
+        }
+
+        .announce-date {
+            font-size: 10.5px;
+            opacity: 0.8;
+        }
+
+        /* Announcement detail page */
+        .news-meta {
+            margin: 12px 12.5px 0;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px 14px 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .news-date { font-size: 11.5px; }
+        .news-title { font-size: 14.5px; font-weight: 500; line-height: 1.45; }
+        .news-foot { display: flex; gap: 22px; font-size: 11.5px; opacity: 0.85; align-items: center; }
+        .news-foot span { display: flex; gap: 6px; align-items: center; }
+        .news-foot svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; color: inherit; }
+
+        /* Course status modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.62);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-dialog {
+            width: min(332px, calc(100vw - 52px));
+            background-color: #232326;
+            border-radius: 28px;
+            padding: 22px 26px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        :root[data-theme="light"] .status-dialog { background-color: #ffffff; }
+
+        .dlg-row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; }
+        .dlg-row.title { font-weight: 600; }
+        .dlg-ok { color: #34c759; font-weight: 400; }
+        .dlg-bad { color: #ff453a; font-weight: 400; }
+        .dlg-checks { display: flex; justify-content: space-between; align-items: center; }
+        .dlg-checks .lines { display: flex; flex-direction: column; gap: 2px; font-size: 13.5px; }
+        .dlg-checks .lines span { display: flex; align-items: center; gap: 12px; }
+        .dlg-check { width: 22px; height: 22px; stroke: #34c759; fill: none; stroke-width: 3.2; color: #34c759; }
+        .dlg-hr { height: 1px; background: #3a3a3c; margin: 6px 0 4px; }
+        .dlg-att { text-align: center; display: flex; flex-direction: column; gap: 5px; font-size: 13px; }
+        .dlg-att .big { font-size: 20px; font-weight: 300; }
+        .dlg-att .warn { color: #e8761e; font-size: 13px; }
+        .dlg-btns { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+        .dlg-btn { border: none; border-radius: 18px; height: 36px; padding: 0 22px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+        .dlg-btn.grey { background: #48484a; color: #fff; }
+        .dlg-btn.purple { background: var(--accent-purple); color: #fff; }
+
+        /* Splash screen */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        #splash .splash-robot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 138px;
+            height: auto;
+            transform: translate(-50%, -54%);
+            animation: robotBob 1.3s ease-in-out infinite alternate;
+        }
+
+        #splash.phase2 .splash-robot {
+            animation: robotLeave 0.7s cubic-bezier(0.5, 0, 0.9, 0.4) forwards;
+        }
+
+        .splash-purple {
+            position: absolute;
+            inset: 0;
+            background: #5c63cc;
+            clip-path: circle(0% at 50% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #splash.phase2 .splash-purple {
+            animation: purpleGrow 0.8s 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .splash-purple img {
+            width: 90px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.85);
+        }
+
+        #splash.phase2 .splash-purple img {
+            animation: logoIn 0.6s 1.0s ease-out forwards;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            transition: opacity 0.45s ease;
+            pointer-events: none;
+        }
+
+        @keyframes robotBob {
+            from { transform: translate(-50%, -54%); }
+            to { transform: translate(-50%, -49%); }
+        }
+
+        @keyframes robotLeave {
+            to { transform: translate(-50%, -190%) scale(0.7); opacity: 0; }
+        }
+
+        @keyframes purpleGrow {
+            to { clip-path: circle(150% at 50% 50%); }
+        }
+
+        @keyframes logoIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Shimmer skeletons shown while a screen "loads" */
+        .skeleton-layer {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: var(--bg-dark);
+            z-index: 25;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .skeleton-layer.below-header {
+            top: 56px;
+        }
+
+        .skeleton-layer.fade {
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .skel {
+            background: linear-gradient(100deg, #181818 30%, #2a2a2c 50%, #181818 70%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s linear infinite;
+            border-radius: 14px;
+        }
+
+        @keyframes shimmer {
+            from { background-position: 200% 0; }
+            to { background-position: -200% 0; }
+        }
+
+        .skel-row { display: flex; gap: 12px; }
+        .skel-row .skel { flex: 1; }
+
+        /* Bottom nav: outline when inactive, filled when active + ripple */
+        .nav-item {
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            overflow: visible;
+        }
+
+        .nav-icon svg .on { display: none; }
+        .nav-item.active .nav-icon svg .on { display: inline; }
+        .nav-item.active .nav-icon svg .off { display: none; }
+
+        .nav-ripple {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            margin-left: -40px;
+            border-radius: 50%;
+            background: rgba(120, 124, 170, 0.28);
+            transform: scale(0);
+            opacity: 1;
+            animation: ripple 0.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to { transform: scale(1); opacity: 0; }
+        }
+
+        .fab.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+
+        .fab {
+            touch-action: none;
+            user-select: none;
+        }
+
+        /* Settings (More) view */
+        .version-strip {
+            background-color: #2b2b2e;
+            text-align: center;
+            font-size: 12.5px;
+            padding: 7px 0;
+            margin-bottom: 6px;
+        }
+
+        :root[data-theme="light"] .version-strip { background-color: #e0e0e8; }
+
+        .settings-title {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 14px 12px;
+        }
+
+        .settings-group {
+            margin: 0 14px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            height: 55px;
+            padding: 0 18px;
+            font-size: 13.5px;
+            border-bottom: 1px solid var(--bg-dark);
+            cursor: pointer;
+        }
+
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item:active { background: rgba(120, 124, 170, 0.12); }
+
+        .settings-item svg {
+            width: 21px;
+            height: 21px;
+            stroke: var(--accent-purple);
+            fill: none;
+            stroke-width: 1.7;
+            color: var(--accent-purple);
+            flex-shrink: 0;
+        }
+
+        .theme-toggle {
+            display: flex;
+            margin: 12px 14px 8px;
+            border: 1px solid var(--accent-purple);
+            border-radius: 20px;
+            overflow: hidden;
+            height: 38px;
+        }
+
+        .theme-opt {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--accent-purple);
+            cursor: pointer;
+        }
+
+        .theme-opt span { color: inherit; }
+        .theme-opt svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; color: inherit; }
+
+        .theme-opt.active {
+            background-color: #000;
+            color: #fff;
+        }
+
+        :root[data-theme="light"] .theme-opt.active { background-color: #16161a; }
+
+        .settings-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 18px 14px 12px;
+        }
+
+        .settings-card-pad { margin-top: 6px; }
+
+        /* Notifications page */
+        .notif-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 14px 90px;
+        }
+
+        .notif-count { font-size: 11px; margin: 8px 0 10px; }
+
+        .notif-buttons { display: flex; gap: 22px; margin-bottom: 14px; }
+
+        .notif-btn {
+            border: none;
+            height: 36px;
+            border-radius: 18px;
+            padding: 0 26px;
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #fff;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .notif-btn.green { background-color: #1fa83a; }
+        .notif-btn.purple { background-color: var(--accent-purple); }
+        .notif-btn span { color: #fff; }
+
+        .notif-legend {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 22px;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .notif-legend div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .notif-legend i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+
+        .notif-week { font-size: 9.5px; letter-spacing: 0.4px; margin-bottom: 14px; }
+        .notif-empty { margin-top: 70px; font-size: 12px; opacity: 0.8; }
+
+        .bottom-action {
+            position: sticky;
+            bottom: 14px;
+            margin: auto 14px 14px;
+            align-self: stretch;
+            height: 44px;
+            border: none;
+            border-radius: 24px;
+            background-color: var(--accent-purple);
+            color: #fff;
+            font-size: 11.5px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            font-family: inherit;
+            cursor: pointer;
+            flex-shrink: 0;
+            z-index: 5;
+        }
+
+        .bottom-action span { color: #fff; }
+        .page-overlay > .bottom-action { position: sticky; }
+
+        /* Academic Calendar */
+        .cal-card {
+            margin: 12px 12.5px 0;
+            background-color: var(--card-bg);
+            border-radius: 18px;
+            padding: 14px 8px 12px;
+        }
+
+        .cal-top {
+            display: grid;
+            grid-template-columns: 40px 1fr auto 40px;
+            align-items: center;
+            padding: 0 4px;
+            margin-bottom: 6px;
+        }
+
+        .cal-top .nav-btn {
+            background: none;
+            border: none;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .cal-top .nav-btn svg { width: 9px; height: 15px; stroke: var(--accent-purple); fill: none; stroke-width: 2.2; color: var(--accent-purple); }
+        .cal-month { font-size: 14px; text-align: center; padding-left: 40px; }
+        .cal-pill { border: 1px solid var(--accent-purple); color: var(--accent-purple); border-radius: 14px; padding: 4px 12px; font-size: 11px; margin-right: 6px; }
+        .cal-pill span { color: inherit; }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            row-gap: 2px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .cal-dow { font-size: 12px; opacity: 0.35; height: 34px; line-height: 34px; }
+
+        .cal-day {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .cal-day span {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12.5px;
+            transition: background-color 0.2s;
+        }
+
+        .cal-day.weekend span { opacity: 0.35; }
+        .cal-day.today span { background-color: var(--accent-purple); color: #fff; opacity: 1; }
+        .cal-day.selected span { box-shadow: inset 0 0 0 1.5px var(--accent-purple); opacity: 1; }
+        .cal-day.today.selected span { box-shadow: none; }
+
+        .cal-events-title { text-align: center; font-size: 13px; margin: 30px 0 0; }
+        .cal-events-empty { text-align: center; font-size: 11.5px; opacity: 0.85; margin-top: 62px; }
+
+        /* Credits: pinned top card + scrolling category list */
+        .tracker-page { overflow: hidden !important; }
+
+        .tracker-page #trackerHost {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-top: 15.6px;
+            padding-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .tracker-page #trackerHost::-webkit-scrollbar { display: none; }
+
+        .tracker-category-card {
+            margin: 0 12.5px 14px;
+            border-radius: 14px;
+            padding: 12px 13px 14px;
+            gap: 4px;
+        }
+
+        .cat-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; line-height: 21px; }
+        .cat-row .name { font-weight: 500; }
+        .cat-row .earned { font-size: 12px; }
+        .cat-row .pct { font-size: 12.5px; }
+        .cat-row .frac { font-size: 13px; font-weight: 500; }
+        .cat-bar { height: 3px; border-radius: 2px; background: #4a4a4c; margin-top: 3px; overflow: hidden; }
+        .cat-bar i { display: block; height: 100%; border-radius: 2px; transform-origin: left; animation: barGrowX 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+        @keyframes barGrowX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+        .c-green { color: #2bb543; } .bg-green { background: #2bb543; }
+        .c-orange { color: #e8761e; } .bg-orange { background: #e8761e; }
+        .c-red { color: #ff453a; } .bg-red { background: #ff453a; }
+
+        /* Hostel ID card + tabs polish */
+        .hostel-id-card .id-card-title {
+            text-align: center;
+            font-size: 13.5px;
+            font-weight: 400;
+        }
+
+        .id-card-photo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .id-card-photo-col .id-card-roll { font-size: 12.5px; font-weight: 400; }
+
+        .id-card-top { align-items: flex-start; }
+
+        .mess-flag {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border: 1.5px solid #ff453a;
+            border-radius: 2px;
+            position: relative;
+            vertical-align: -1px;
+            margin-left: 4px;
+        }
+
+        .mess-flag::after { content: ''; position: absolute; inset: 2px; background: #ff453a; border-radius: 1px; }
+
+        .mess-dropdown-banner {
+            background-color: transparent;
+            justify-content: center;
+            position: relative;
+            font-size: 12.5px;
+            font-weight: 400;
+            margin: 4px 20px 6px;
+            padding: 10px 0;
+        }
+
+        .mess-dropdown-banner i { position: absolute; right: 8px; }
+
+        .mess-councillor-card { border-color: #34346e; }
+        .councillor-row:last-child span { color: #4b4f9c; }
+
+        /* Complaints tab */
+        .complaint-subtabs {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin: 12px 0 0;
+        }
+
+        .complaint-subtab {
+            font-size: 12.5px;
+            line-height: 24px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .complaint-subtab.active::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: -2px;
+            height: 2px;
+            background: var(--accent-purple);
+        }
+
+        .complaint-head {
+            margin: 18px 12.5px 10px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 14px 14px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            font-weight: 600;
+        }
+
+        .complaint-empty {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 190px;
+        }
+
+        .hostel-page-pad { padding-bottom: 80px; }
+
+        .finance-year-row {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 24px 0 20px;
+            margin-top: -4px;
+        }
+
+        .finance-year-row .finance-year-dropdown {
+            margin-left: 0;
+            background: transparent;
+            padding: 8px 0;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
+
+<!-- Splash: mascot on white, then purple wipe with the wordmark -->
+<div id="splash">
+    <img class="splash-robot" src="assets/robot.png" alt="">
+    <div class="splash-purple"><img src="assets/splash-logo.png" alt="IRIS"></div>
+</div>
 
 <div class="app-container">
     
@@ -1689,7 +2408,7 @@
     <!-- ============================================== -->
     <!-- CREDITS TRACKER OVERLAY PAGE                   -->
     <!-- ============================================== -->
-    <div id="creditsTrackerPage" class="page-overlay">
+    <div id="creditsTrackerPage" class="page-overlay tracker-page">
         <div class="page-header">
             <button class="back-btn" onclick="closeCreditsTracker()" aria-label="Back"><svg viewBox="0 0 8 13"><polyline points="7,1 1.5,6.5 7,12"/></svg></button>
             <span>Credits Tracker</span>
@@ -1733,55 +2452,19 @@
         </div>
 
         <div class="slide-host" id="trackerHost">
-        <!-- SEMESTER BREAKDOWN VIEW (Chart, built from data in JS) -->
-        <div id="trackerSectionSem" class="tracker-content-section">
-            <div class="tracker-chart-card" id="semChart"></div>
+            <!-- SEMESTER BREAKDOWN VIEW (Chart, built from data in JS) -->
+            <div id="trackerSectionSem" class="tracker-content-section">
+                <div class="tracker-chart-card" id="semChart"></div>
+            </div>
+
+            <!-- CATEGORY BREAKDOWN VIEW (built from data in JS) -->
+            <div id="trackerSectionCat" class="tracker-content-section" style="display: none;"></div>
         </div>
 
-        <!-- CATEGORY BREAKDOWN VIEW (List) -->
-        <div id="trackerSectionCat" class="tracker-content-section" style="display: none;">
-            <div class="tracker-category-card">
-                <div class="tracker-cat-header">
-                    <span>Program Core</span>
-                    <span class="tracker-cat-pct" style="color: var(--status-green);">100.00%</span>
-                </div>
-                <div class="tracker-progress-bar-bg">
-                    <div class="tracker-progress-bar-fill" style="width: 100%; background-color: var(--status-green);"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
-                    <span></span>
-                    <span>Credits Earned: 62/62</span>
-                </div>
-            </div>
-
-            <div class="tracker-category-card">
-                <div class="tracker-cat-header">
-                    <span>Mandatory Learning Course</span>
-                    <span class="tracker-cat-pct" style="color: var(--alert-red);">31.25%</span>
-                </div>
-                <div class="tracker-progress-bar-bg">
-                    <div class="tracker-progress-bar-fill" style="width: 31.25%; background-color: var(--alert-red);"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
-                    <span></span>
-                    <span>Credits Earned: 5/16</span>
-                </div>
-            </div>
-
-            <div class="tracker-category-card">
-                <div class="tracker-cat-header">
-                    <span>Major Project</span>
-                    <span class="tracker-cat-pct" style="color: var(--text-secondary);">0.00%</span>
-                </div>
-                <div class="tracker-progress-bar-bg">
-                    <div class="tracker-progress-bar-fill" style="width: 0%; background-color: #555;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
-                    <span></span>
-                    <span>Credits Earned: 0/6</span>
-                </div>
-            </div>
-        </div>
+        <div class="skeleton-layer below-header" id="creditsSkeleton">
+            <div class="skel" style="height:292px;margin:12px -7.5px 0"></div>
+            <div class="skel" style="height:30px;width:150px;margin:24px auto 0;border-radius:16px"></div>
+            <div class="skel" style="height:300px;margin:16px -7.5px 0"></div>
         </div>
     </div>
     <!-- End Credits Tracker Page -->
@@ -1814,16 +2497,18 @@
         <!-- TAB 1: HOME -->
         <div id="hostelTabHome" class="hostel-tab-content">
             <div class="hostel-id-card">
-                <div class="section-title" style="padding: 0 0 5px 0; font-size: 15px; color: var(--text-primary);">Hostel & Mess ID Card</div>
+                <div class="id-card-title">Hostel & Mess ID Card</div>
                 <div class="id-card-top">
-                    <img src="photo.jpg" alt="Profile" class="id-card-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
+                    <div class="id-card-photo-col">
+                        <img src="photo.jpg" alt="Profile" class="id-card-img" onclick="openImageModal()" onerror="this.src='https://i.pravatar.cc/150?img=11'">
+                        <div class="id-card-roll">231EC241</div>
+                    </div>
                     <div class="id-card-details">
                         <div class="id-card-name">R Rishadd</div>
                         <div class="id-card-hostel">Kailash (MT-III) Room<br>D308</div>
-                        <div class="id-card-mess" style="margin-top: 4px;">Block IV Mess (Block IV)</div>
+                        <div class="id-card-mess" style="margin-top: 4px;">Block IV Mess (Block IV)<span class="mess-flag"></span></div>
                     </div>
                 </div>
-                <div class="id-card-roll">231EC241</div>
                 
                 <div class="id-card-actions">
                     <i class="fa-solid fa-download"></i>
@@ -2057,13 +2742,13 @@
         <!-- TAB 3: ALLOTMENTS -->
         <div id="hostelTabAllotments" class="hostel-tab-content" style="display: none;">
             <div class="allotment-subtabs-row">
-                <div class="allotment-subtab" id="allotSubMess" onclick="switchAllotmentSubTab('mess')">Mess Allotment</div>
-                <div class="allotment-subtab active" id="allotSubHostel" onclick="switchAllotmentSubTab('hostel')">Hostel Allotment</div>
+                <div class="allotment-subtab active" id="allotSubMess" onclick="switchAllotmentSubTab('mess')">Mess Allotment</div>
+                <div class="allotment-subtab" id="allotSubHostel" onclick="switchAllotmentSubTab('hostel')">Hostel Allotment</div>
             </div>
 
             <div class="slide-host" id="allotHost">
             <!-- MESS ALLOTMENT TIMELINE -->
-            <div id="timelineMess" class="timeline-container" style="display: none;">
+            <div id="timelineMess" class="timeline-container">
                 <div class="timeline-item">
                     <div class="timeline-time">15-07-2026<br>10:30</div>
                     <div class="timeline-track"><div class="timeline-node"></div></div>
@@ -2112,7 +2797,7 @@
             </div>
 
             <!-- HOSTEL ALLOTMENT TIMELINE -->
-            <div id="timelineHostel" class="timeline-container">
+            <div id="timelineHostel" class="timeline-container" style="display: none;">
                 <div class="timeline-item">
                     <div class="timeline-time">15-07-2026<br>10:30</div>
                     <div class="timeline-track"><div class="timeline-node"></div></div>
@@ -2164,9 +2849,18 @@
 
         <!-- TAB 4: COMPLAINTS -->
         <div id="hostelTabComplaints" class="hostel-tab-content" style="display: none;">
-            <div class="details-card" style="text-align: center; color: var(--text-secondary); padding: 40px 20px;">
-                <p>No complaints registered.</p>
+            <div class="complaint-subtabs">
+                <div class="complaint-subtab active" id="compSubFiled" onclick="switchComplaintSubTab('filed')">Filed Complaints</div>
+                <div class="complaint-subtab" id="compSubBlock" onclick="switchComplaintSubTab('block')">All Block Complaints</div>
             </div>
+            <div class="slide-host" id="complaintHost" style="min-height: 420px;">
+                <div id="complaintsFiled" class="complaint-empty">No Complaints filed yet</div>
+                <div id="complaintsBlock" style="display: none;">
+                    <div class="complaint-head"><span>Complaint Details</span><span>Status</span></div>
+                    <div class="complaint-empty" style="margin-top: 120px;">No Complaints found</div>
+                </div>
+            </div>
+            <button class="bottom-action" style="position: fixed; left: 14px; right: 82px; bottom: 50px; margin: 0; width: auto;"><span>Make a Complaint</span></button>
         </div>
 
         <!-- TAB 5: MESS FINANCE -->
@@ -2176,37 +2870,120 @@
                 <div class="finance-label">Current Mess Balance</div>
             </div>
             <div class="finance-filters-row">
-                <div class="finance-pill active">Jan-Apr</div>
-                <div class="finance-pill">May-Aug</div>
-                <div class="finance-pill">Sep-Dec</div>
+                <div class="finance-pill active" onclick="selectFinancePill(this)">Jan-Apr</div>
+                <div class="finance-pill" onclick="selectFinancePill(this)">May-Aug</div>
+                <div class="finance-pill" onclick="selectFinancePill(this)">Sep-Dec</div>
+            </div>
+            <div class="finance-year-row">
                 <div class="finance-year-dropdown">
                     <span>2026</span>
                     <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
                 </div>
             </div>
-            <div class="details-card" style="text-align: center; color: var(--text-secondary); padding: 40px 20px;">
+            <div class="details-card" style="text-align: center; color: var(--text-secondary); padding: 40px 20px; background: transparent; margin-top: 120px;">
                 <p>No transactions</p>
             </div>
         </div>
+        </div>
+
+        <div class="skeleton-layer" id="hostelSkeleton" style="top: 118px; position: fixed;">
+            <div class="skel" style="height:170px;margin-top:6px"></div>
+            <div class="skel" style="height:34px;width:60%;margin-top:22px"></div>
+            <div class="skel" style="height:150px;margin-top:20px"></div>
         </div>
 
     </div>
     <!-- End Hostel Dashboard Page -->
 
     <!-- ============================================== -->
+    <!-- NOTIFICATIONS PAGE                             -->
+    <!-- ============================================== -->
+    <div id="notificationsPage" class="page-overlay">
+        <div class="page-header">
+            <button class="back-btn" onclick="closeOverlay('notificationsPage')" aria-label="Back"><svg viewBox="0 0 8 13"><polyline points="7,1 1.5,6.5 7,12"/></svg></button>
+            <span>Notifications</span>
+            <svg width="21" height="12" viewBox="0 0 21 12" fill="none" stroke="#676fd1" stroke-width="1.8"><polyline points="6.5,1 1,6 6.5,11"/><polyline points="14.5,1 20,6 14.5,11"/></svg>
+        </div>
+        <div class="notif-body">
+            <div class="notif-count">You have 0 unread notifications</div>
+            <div class="notif-buttons">
+                <button class="notif-btn green"><span>Enable Notifications</span></button>
+                <button class="notif-btn purple"><span>My devices</span></button>
+            </div>
+            <div class="notif-legend">
+                <div><i style="background:#ff453a"></i><span>Urgent</span></div>
+                <div><i style="background:#676fd1"></i><span>General</span></div>
+                <div><i style="background:#8e8e93"></i><span>Previously<br>read</span></div>
+            </div>
+            <div class="notif-week">CURRENT WEEK</div>
+            <div class="notif-empty">No notifications</div>
+        </div>
+        <button class="bottom-action"><span>MARK ALL AS READ</span></button>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- ANNOUNCEMENT DETAIL PAGE                       -->
+    <!-- ============================================== -->
+    <div id="newsPage" class="page-overlay">
+        <div class="page-header">
+            <button class="back-btn" onclick="closeOverlay('newsPage')" aria-label="Back"><svg viewBox="0 0 8 13"><polyline points="7,1 1.5,6.5 7,12"/></svg></button>
+            <span>Academic News</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#676fd1" stroke-width="2.2" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 6.4M8.6 13.4l6.8 4.2"/></svg>
+        </div>
+        <div class="news-meta">
+            <div class="news-date">September 21 , 2026 - 10 : 39 AM</div>
+            <div class="news-title">Student Medical Insurance, along with the SOP and claim forms</div>
+            <div class="news-foot">
+                <span><svg viewBox="0 0 24 24" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.4" fill="currentColor"/></svg>Academic News</span>
+                <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></svg>0 min read</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- ACADEMIC CALENDAR PAGE                         -->
+    <!-- ============================================== -->
+    <div id="calendarPage" class="page-overlay">
+        <div class="page-header">
+            <button class="back-btn" onclick="closeOverlay('calendarPage')" aria-label="Back"><svg viewBox="0 0 8 13"><polyline points="7,1 1.5,6.5 7,12"/></svg></button>
+            <span>Academic Calendar</span>
+            <div class="hdr-right">
+                <svg width="19" height="15" viewBox="0 0 19 15" fill="none" stroke="#676fd1" stroke-width="2"><circle cx="2" cy="2" r="1.1" fill="#676fd1"/><circle cx="2" cy="7.500" r="1.1" fill="#676fd1"/><circle cx="2" cy="13" r="1.1" fill="#676fd1"/><path d="M6 2h12M6 7.500h12M6 13h12"/></svg>
+                <svg width="21" height="12" viewBox="0 0 21 12" fill="none" stroke="#676fd1" stroke-width="1.8"><polyline points="6.5,1 1,6 6.5,11"/><polyline points="14.5,1 20,6 14.5,11"/></svg>
+            </div>
+        </div>
+        <div class="cal-card">
+            <div class="cal-top">
+                <button class="nav-btn" onclick="calShift(-1)" aria-label="Previous month"><svg viewBox="0 0 9 15"><polyline points="7.5,1.500 1.500,7.500 7.500,13.500"/></svg></button>
+                <div class="cal-month" id="calMonthLabel">October 2026</div>
+                <div class="cal-pill"><span>Month</span></div>
+                <button class="nav-btn" onclick="calShift(1)" aria-label="Next month"><svg viewBox="0 0 9 15"><polyline points="1.500,1.500 7.500,7.500 1.500,13.500"/></svg></button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <div class="cal-events-title">Academic Events</div>
+        <div class="cal-events-empty">No events for the day</div>
+    </div>
+
+    <!-- Course status dialog -->
+    <div class="modal-backdrop" id="courseModal" onclick="if(event.target===this)closeCourseModal()">
+        <div class="status-dialog" id="courseDialog"></div>
+    </div>
+
+    <!-- ============================================== -->
     <!-- MAIN HOME VIEW                                 -->
     <!-- ============================================== -->
     <div id="homeView" class="view-section">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left-space"></div>
-            <div class="logo">IrIS</div>
-            <div class="bell-container">
+        <!-- Header: pinned, lighter band appears when content scrolls under it -->
+        <header class="home-header" id="homeHeader">
+            <div></div>
+            <img class="logo-img" src="assets/logo.png" alt="IRIS">
+            <div class="bell-container" onclick="openNotifications()" aria-label="Notifications">
                 <i class="fa-regular fa-bell"></i>
-                <div class="notification-dot"></div>
             </div>
         </header>
 
+        <div class="home-content" id="homeContent">
         <!-- Profile Section -->
         <h2 class="section-title">Profile</h2>
         <div class="profile-card" onclick="openProfileDetails()">
@@ -2246,6 +3023,8 @@
                 </div>
             </div>
 
+            <div class="dash-divider"></div>
+
             <!-- Hostel card clickable to open Hostel Dashboard -->
             <div class="dash-card-container" onclick="openHostelDashboard()">
                 <div class="dash-card" style="position: relative;">
@@ -2261,12 +3040,12 @@
         <!-- Courses Section -->
         <h2 class="section-title">Courses</h2>
         <div class="horizontal-scroll">
-            <div class="course-card">
+            <div class="course-card no-att" onclick="openCourseModal('EC357')">
                 <div class="course-code">EC357</div>
                 <div class="course-title">Adhoc and Sensor Networks</div>
                 <div class="course-status">Attendance not marked yet.</div>
             </div>
-            <div class="course-card">
+            <div class="course-card no-att" onclick="openCourseModal('EC840')">
                 <div class="red-corner-tag"></div>
                 <div class="course-code">EC840</div>
                 <div class="course-title">Millimeter Wave Communications</div>
@@ -2275,7 +3054,7 @@
         </div>
 
         <!-- Favorite Screens Section -->
-        <h2 class="section-title">Favorite Screens <i class="fa-solid fa-star" style="font-size: 14px;"></i></h2>
+        <h2 class="section-title">Favorite Screens <svg class="star-ic" viewBox="0 0 24 24"><path fill="#fff" d="M12 1.500l3.200 6.700 7.300.9-5.400 5 1.400 7.300L12 17.800 5.500 21.400l1.400-7.300-5.400-5 7.300-.9z"/><circle cx="12" cy="12.500" r="3.200" fill="#040404"/></svg></h2>
         <div class="horizontal-scroll">
             <div class="fav-card-add">
                 <span>Add Favorite<br>Screens</span>
@@ -2285,6 +3064,52 @@
 
         <!-- Announcements Section -->
         <h2 class="section-title">Announcements</h2>
+        <div class="announce-card" onclick="openOverlay('newsPage')">
+            <div class="announce-tag">Academic News</div>
+            <div class="announce-title">Student Medical Insurance, along with the SOP and claim forms</div>
+            <div class="announce-date">Updated at:&nbsp; September 21 , 2026 - 10 : 39 AM</div>
+        </div>
+
+        <!-- Loading placeholders -->
+        <div class="skeleton-layer" id="homeSkeleton">
+            <h2 class="section-title" style="padding-left:0">Profile</h2>
+            <div class="skel" style="height:98px"></div>
+            <h2 class="section-title" style="padding-left:0">Dashboard</h2>
+            <div class="skel-row"><div class="skel" style="height:96px"></div><div class="skel" style="height:96px"></div></div>
+            <h2 class="section-title" style="padding-left:0">Courses</h2>
+            <div class="skel-row"><div class="skel" style="height:108px"></div><div class="skel" style="height:108px"></div></div>
+            <h2 class="section-title" style="padding-left:0">Favorite Screens</h2>
+            <div class="skel-row"><div class="skel" style="height:80px"></div><div class="skel" style="height:80px"></div></div>
+        </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- SETTINGS (MORE) VIEW                           -->
+    <!-- ============================================== -->
+    <div id="moreView" class="view-section" style="display: none;">
+        <header class="cat-header" id="moreHeader" style="position:sticky;top:0;z-index:30;background:var(--bg-dark)">
+            <img class="logo-img" src="assets/logo.png" alt="IRIS">
+        </header>
+        <div class="version-strip">v4.3.2</div>
+        <div class="settings-title">Settings</div>
+        <div class="theme-toggle" id="themeToggle">
+            <div class="theme-opt" data-theme-opt="light" onclick="setTheme('light')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></svg><span>Light</span></div>
+            <div class="theme-opt active" data-theme-opt="dark" onclick="setTheme('dark')"><svg viewBox="0 0 24 24"><path d="M21 12.800A9 9 0 1 1 11.200 3a7 7 0 0 0 9.800 9.800z"/></svg><span>Dark</span></div>
+            <div class="theme-opt" data-theme-opt="system" onclick="setTheme('system')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.400 15a1.700 1.700 0 0 0 .3 1.800l.1.1a2 2 0 1 1-2.800 2.800l-.1-.1a1.700 1.700 0 0 0-1.800-.3 1.700 1.700 0 0 0-1 1.500V21a2 2 0 0 1-4 0v-.1a1.700 1.700 0 0 0-1.100-1.500 1.700 1.700 0 0 0-1.800.3l-.1.1a2 2 0 1 1-2.800-2.800l.1-.1a1.700 1.700 0 0 0 .3-1.800 1.700 1.700 0 0 0-1.500-1H3a2 2 0 0 1 0-4h.1a1.700 1.700 0 0 0 1.500-1.100 1.700 1.700 0 0 0-.3-1.800l-.1-.1a2 2 0 1 1 2.800-2.800l.1.1a1.700 1.700 0 0 0 1.800.3H9a1.700 1.700 0 0 0 1-1.500V3a2 2 0 0 1 4 0v.1a1.700 1.700 0 0 0 1 1.500 1.700 1.700 0 0 0 1.800-.3l.1-.1a2 2 0 1 1 2.800 2.800l-.1.1a1.700 1.700 0 0 0-.3 1.800V9a1.700 1.700 0 0 0 1.500 1H21a2 2 0 0 1 0 4h-.1a1.700 1.700 0 0 0-1.500 1z"/></svg><span>System</span></div>
+        </div>
+        <div class="settings-group settings-card-pad">
+            <div class="settings-item"><i data-lucide="key-round"></i><span>Change Password</span></div>
+            <div class="settings-item" onclick="this.querySelector('svg').animate([{transform:'rotate(0)'},{transform:'rotate(360deg)'}],{duration:700,easing:'ease'})"><i data-lucide="refresh-cw"></i><span>Sync account</span></div>
+            <div class="settings-item"><i data-lucide="log-out"></i><span>Log out</span></div>
+        </div>
+        <div class="settings-subtitle">Miscellaneous</div>
+        <div class="settings-group">
+            <div class="settings-item"><i data-lucide="info"></i><span>About IRIS</span></div>
+            <div class="settings-item"><i data-lucide="mail"></i><span>Support</span></div>
+            <div class="settings-item"><i data-lucide="fingerprint"></i><span>Open Source Libraries</span></div>
+            <div class="settings-item"><i data-lucide="shield"></i><span>Data Protection Policy</span></div>
+        </div>
     </div>
 
     <!-- ============================================== -->
@@ -2294,7 +3119,7 @@
         <!-- Pinned: logo, search and category tabs. Only the grids below scroll. -->
         <div class="cat-sticky">
             <header class="cat-header" id="catHeader">
-                <div class="logo">IrIS</div>
+                <img class="logo-img" src="assets/logo.png" alt="IRIS">
             </header>
 
             <!-- Search Bar -->
@@ -2346,7 +3171,7 @@
 
         <!-- ACADEMICS GRID -->
         <div id="gridAcademics" class="modules-grid">
-            <div class="mod-card">
+            <div class="mod-card" onclick="openCalendar()">
                 <span class="mod-title">Academic Calendar</span>
                 <i data-lucide="calendar-days" class="mod-icon ic"></i>
             </div>
@@ -2444,15 +3269,24 @@
     <!-- Bottom Navigation (Always Visible) -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="navHomeBtn" onclick="switchView('home')">
-            <div class="nav-icon"><svg viewBox="0 2.5 24 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2.500 11.500 12 3.500l9.500 8"/><path d="M4.500 10v12h5v-6.500h5V22h5V10"/></svg></div>
+            <div class="nav-icon"><svg viewBox="0 1 24 22">
+                <g class="off" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M2.500 11.500 12 3l9.500 8.500"/><path d="M5 10v11h5v-6h4v6h5V10"/></g>
+                <g class="on" fill="currentColor"><path d="M12 1.800 1 11.500h3V22h6v-6.500h4V22h6V11.500h3z"/></g>
+            </svg></div>
             <span>Home</span>
         </div>
         <div class="nav-item" id="navCategoriesBtn" onclick="switchView('categories')">
-            <div class="nav-icon"><svg viewBox="0 0 24 21" fill="currentColor"><rect x="0" y="0" width="14" height="21"/><rect x="15.500" y="0" width="8.500" height="8"/><rect x="15.500" y="9.500" width="8.500" height="11.500"/></svg></div>
+            <div class="nav-icon"><svg viewBox="0 0 24 21">
+                <g class="off" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="1" width="12" height="19"/><rect x="15.500" y="1" width="7.500" height="7"/><rect x="15.500" y="10.500" width="7.500" height="9.500"/><path d="M4 5h6M4 9h6" stroke-width="1.200"/></g>
+                <g class="on" fill="currentColor"><rect x="0" y="0" width="14" height="21"/><rect x="15.500" y="0" width="8.500" height="8"/><rect x="15.500" y="9.500" width="8.500" height="11.500"/></g>
+            </svg></div>
             <span>Categories</span>
         </div>
-        <div class="nav-item">
-            <div class="nav-icon"><svg viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="3" cy="3" r="2"/><circle cx="3" cy="10" r="2"/><circle cx="3" cy="17" r="2"/><path d="M9 3h14M9 10h14M9 17h14"/></svg></div>
+        <div class="nav-item" id="navMoreBtn" onclick="switchView('more')">
+            <div class="nav-icon"><svg viewBox="0 0 24 20">
+                <g class="off" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="3" cy="3" r="1.900"/><circle cx="3" cy="10" r="1.900"/><circle cx="3" cy="17" r="1.900"/><path d="M9 3h14M9 10h14M9 17h14"/></g>
+                <g class="on" fill="currentColor" stroke="currentColor"><circle cx="3" cy="3" r="2.300"/><circle cx="3" cy="10" r="2.300"/><circle cx="3" cy="17" r="2.300"/><path d="M8.500 3h15M8.500 10h15M8.500 17h15" stroke-width="2.600" fill="none"/></g>
+            </svg></div>
             <span>More</span>
         </div>
     </nav>
@@ -2562,12 +3396,17 @@
 
     function openCreditsTracker() {
         openOverlay('creditsTrackerPage');
-        animateRing();
+        showSkeleton('creditsSkeleton', 650);
+        const ring = document.getElementById('ringFill');
+        ring.style.transition = 'none';
+        ring.style.strokeDashoffset = RING_LEN;
+        setTimeout(() => { buildSemChart(); animateRing(); }, 620);
     }
     function closeCreditsTracker(instant) { closeOverlay('creditsTrackerPage', instant === true); }
 
     function openHostelDashboard() {
         openOverlay('hostelDashboardPage');
+        showSkeleton('hostelSkeleton', 650);
         setTimeout(initMessCarousel, 50);
     }
     function closeHostelDashboard(instant) { closeOverlay('hostelDashboardPage', instant === true); }
@@ -2704,7 +3543,28 @@
         // Keep the active pill in view when the pill row scrolls horizontally
         document.getElementById(HOSTEL_TABS[newIdx][1]).scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
 
-        if (tabName === 'mess') setTimeout(initMessCarousel, 50);
+        if (tabName === 'mess') {
+            showSkeleton('hostelSkeleton', 550);
+            setTimeout(initMessCarousel, 50);
+        }
+    }
+
+    function switchComplaintSubTab(which) {
+        const a = document.getElementById('compSubFiled');
+        const b = document.getElementById('compSubBlock');
+        const toBlock = which === 'block';
+        if (toBlock === b.classList.contains('active')) return;
+        b.classList.toggle('active', toBlock);
+        a.classList.toggle('active', !toBlock);
+        const filed = document.getElementById('complaintsFiled');
+        const block = document.getElementById('complaintsBlock');
+        const host = document.getElementById('complaintHost');
+        if (toBlock) slideSwap(host, filed, block, 1, 'block');
+        else slideSwap(host, block, filed, -1, 'block');
+    }
+
+    function selectFinancePill(el) {
+        document.querySelectorAll('.finance-pill').forEach(p => p.classList.toggle('active', p === el));
     }
 
     function switchAllotmentSubTab(subTabName) {
@@ -2726,28 +3586,27 @@
     }
 
     /* ---------- Home / Categories ---------- */
-    function switchView(viewName) {
-        const homeView = document.getElementById('homeView');
-        const categoriesView = document.getElementById('categoriesView');
-        const navHomeBtn = document.getElementById('navHomeBtn');
-        const navCategoriesBtn = document.getElementById('navCategoriesBtn');
+    const VIEWS = [
+        ['home', 'homeView', 'navHomeBtn'],
+        ['categories', 'categoriesView', 'navCategoriesBtn'],
+        ['more', 'moreView', 'navMoreBtn']
+    ];
 
+    function switchView(viewName) {
         closeProfileDetails(true);
         closeHostelDashboard(true);
         closeCreditsTracker(true);
+        ['notificationsPage', 'newsPage', 'calendarPage'].forEach(id => closeOverlay(id, true));
 
-        const toCategories = viewName === 'categories';
-        if (toCategories === navCategoriesBtn.classList.contains('active')) return;
+        const cur = VIEWS.findIndex(v => document.getElementById(v[2]).classList.contains('active'));
+        const next = VIEWS.findIndex(v => v[0] === viewName);
+        if (next < 0 || next === cur) return;
 
-        navCategoriesBtn.classList.toggle('active', toCategories);
-        navHomeBtn.classList.toggle('active', !toCategories);
+        VIEWS.forEach((v, i) => document.getElementById(v[2]).classList.toggle('active', i === next));
 
         appEl.scrollTop = 0;
-        if (toCategories) {
-            slideSwap(appEl, homeView, categoriesView, 1, 'block');
-        } else {
-            slideSwap(appEl, categoriesView, homeView, -1, 'block');
-        }
+        slideSwap(appEl, document.getElementById(VIEWS[cur][1]), document.getElementById(VIEWS[next][1]),
+            next > cur ? 1 : -1, 'block');
     }
 
     const CATEGORY_TABS = [
@@ -2770,7 +3629,11 @@
 
     /* ---------- Header band: lighter header appears once content scrolls under it ---------- */
     appEl.addEventListener('scroll', () => {
-        document.getElementById('catHeader').classList.toggle('scrolled', appEl.scrollTop > 2);
+        ['catHeader', 'homeHeader', 'moreHeader'].forEach(id =>
+            document.getElementById(id).classList.toggle('scrolled', appEl.scrollTop > 2));
+    });
+    document.getElementById('trackerHost').addEventListener('scroll', e => {
+        document.querySelector('#creditsTrackerPage .page-header').classList.toggle('scrolled', e.target.scrollTop > 2);
     });
     document.querySelectorAll('.page-overlay').forEach(o => {
         o.addEventListener('scroll', () => {
@@ -2779,7 +3642,211 @@
         });
     });
 
+    /* ---------- Shimmer skeletons ---------- */
+    function showSkeleton(id, ms) {
+        const layer = document.getElementById(id);
+        if (!layer) return;
+        clearTimeout(layer._t1);
+        clearTimeout(layer._t2);
+        layer.classList.remove('fade');
+        layer.style.display = 'block';
+        layer._t1 = setTimeout(() => {
+            layer.classList.add('fade');
+            layer._t2 = setTimeout(() => {
+                layer.style.display = 'none';
+                layer.classList.remove('fade');
+            }, 260);
+        }, ms);
+    }
+
+    /* ---------- Splash: mascot on white -> purple wipe -> wordmark -> home placeholders ---------- */
+    (function runSplash() {
+        const splash = document.getElementById('splash');
+        if (!splash) return;
+        if (location.search.indexOf('nosplash') >= 0) {
+            splash.remove();
+            return;
+        }
+        setTimeout(() => splash.classList.add('phase2'), 1500);
+        setTimeout(() => showSkeleton('homeSkeleton', 1000), 3300);
+        setTimeout(() => splash.classList.add('hide'), 3500);
+        setTimeout(() => splash.remove(), 4100);
+    })();
+
+    /* ---------- Notifications, announcement page ---------- */
+    function openNotifications() { openOverlay('notificationsPage'); }
+
+    /* ---------- Course status dialog ---------- */
+    const COURSE_INFO = {
+        EC357: { status: 'Approved', ok: true },
+        EC840: { status: 'Dropped', ok: false }
+    };
+    const CHECK_SVG = '<svg class="dlg-check" viewBox="0 0 24 24"><path d="M3 12.500l6 6L21 6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function openCourseModal(code) {
+        const info = COURSE_INFO[code];
+        if (!info) return;
+        const dlg = document.getElementById('courseDialog');
+        let html = '<div class="dlg-row title"><span>Course Status:</span><span class="' + (info.ok ? 'dlg-ok' : 'dlg-bad') + '">' + info.status + '</span></div>';
+        if (info.ok) {
+            html += '<div class="dlg-checks"><div class="lines"><span>Faculty Advisor ' + CHECK_SVG + '</span><span>Course Instructor ' + CHECK_SVG + '</span></div></div>';
+        } else {
+            html += '<div class="dlg-row" style="opacity:.8;font-size:12.5px">This course has been dropped.</div>';
+        }
+        html += '<div class="dlg-btns"><button class="dlg-btn grey" onclick="closeCourseModal()">View Course</button><button class="dlg-btn purple" onclick="closeCourseModal()">OK</button></div>';
+        dlg.innerHTML = html;
+        const modal = document.getElementById('courseModal');
+        modal.style.display = 'flex';
+        modal.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180 });
+        dlg.animate([{ transform: 'scale(0.88)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }], { duration: 220, easing: EASE });
+    }
+
+    function closeCourseModal() {
+        const modal = document.getElementById('courseModal');
+        const dlg = document.getElementById('courseDialog');
+        modal.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160 });
+        dlg.animate([{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(0.92)', opacity: 0 }], { duration: 160 })
+            .onfinish = () => { modal.style.display = 'none'; };
+    }
+
+    /* ---------- Academic Calendar ---------- */
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const calNow = new Date();
+    let calY = calNow.getFullYear();
+    let calM = calNow.getMonth();
+    let calSel = null;
+
+    function buildCalendar() {
+        document.getElementById('calMonthLabel').textContent = MONTHS[calM] + ' ' + calY;
+        const first = (new Date(calY, calM, 1).getDay() + 6) % 7; // Monday first
+        const days = new Date(calY, calM + 1, 0).getDate();
+        let html = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => '<div class="cal-dow">' + d + '</div>').join('');
+        for (let i = 0; i < first; i++) html += '<div></div>';
+        for (let d = 1; d <= days; d++) {
+            const col = (first + d - 1) % 7;
+            const isToday = d === calNow.getDate() && calM === calNow.getMonth() && calY === calNow.getFullYear();
+            const isSel = calSel && calSel.d === d && calSel.m === calM && calSel.y === calY;
+            html += '<div class="cal-day' + (col >= 5 ? ' weekend' : '') + (isToday ? ' today' : '') + (isSel ? ' selected' : '') +
+                '" onclick="calPick(' + d + ')"><span>' + d + '</span></div>';
+        }
+        document.getElementById('calGrid').innerHTML = html;
+    }
+
+    function calPick(d) { calSel = { d: d, m: calM, y: calY }; buildCalendar(); }
+
+    function calShift(delta) {
+        calM += delta;
+        if (calM < 0) { calM = 11; calY--; }
+        if (calM > 11) { calM = 0; calY++; }
+        buildCalendar();
+    }
+
+    function openCalendar() {
+        calY = calNow.getFullYear();
+        calM = calNow.getMonth();
+        buildCalendar();
+        openOverlay('calendarPage');
+    }
+
+    /* ---------- Credits: category breakdown ---------- */
+    const CATEGORIES = [
+        ['Program Core', 62, 62],
+        ['Mandatory Learning Course', 5, 16],
+        ['Major Project', 0, 6]
+    ];
+
+    function buildCategories() {
+        document.getElementById('trackerSectionCat').innerHTML = CATEGORIES.map(c => {
+            const pct = c[2] ? (c[1] / c[2]) * 100 : 0;
+            const tone = pct >= 75 ? 'green' : (pct >= 50 ? 'orange' : 'red');
+            return '<div class="tracker-category-card">' +
+                '<div class="cat-row"><span class="name">' + c[0] + '</span><span class="earned">Credits Earned:</span></div>' +
+                '<div class="cat-row"><span class="pct c-' + tone + '">' + pct.toFixed(2) + '%</span><span class="frac">' + c[1] + '/' + c[2] + '</span></div>' +
+                '<div class="cat-bar"><i class="bg-' + tone + '" style="width:' + pct + '%"></i></div></div>';
+        }).join('');
+    }
+
+    /* ---------- Theme (Light / Dark / System) ---------- */
+    function applyTheme(mode) {
+        const effective = mode === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+            : mode;
+        document.documentElement.setAttribute('data-theme', effective);
+        document.querySelectorAll('.theme-opt').forEach(o => o.classList.toggle('active', o.dataset.themeOpt === mode));
+    }
+
+    function setTheme(mode) {
+        try { localStorage.setItem('iris-theme', mode); } catch (e) {}
+        applyTheme(mode);
+    }
+
+    (function initTheme() {
+        let saved = 'dark';
+        try { saved = localStorage.getItem('iris-theme') || 'dark'; } catch (e) {}
+        applyTheme(saved);
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+            let m = 'dark';
+            try { m = localStorage.getItem('iris-theme') || 'dark'; } catch (e) {}
+            if (m === 'system') applyTheme('system');
+        });
+    })();
+
+    /* ---------- Bottom nav ripple ---------- */
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('pointerdown', () => {
+            const r = document.createElement('span');
+            r.className = 'nav-ripple';
+            item.appendChild(r);
+            setTimeout(() => r.remove(), 520);
+        });
+    });
+
+    /* ---------- Draggable chat button (snaps to the nearest screen edge) ---------- */
+    (function dragFab() {
+        let sx, sy, ox, oy, down = false, moved = false;
+        const margin = 16.5;
+        fabEl.addEventListener('pointerdown', e => {
+            down = true;
+            moved = false;
+            sx = e.clientX;
+            sy = e.clientY;
+            const r = fabEl.getBoundingClientRect();
+            ox = r.left;
+            oy = r.top;
+            fabEl.setPointerCapture(e.pointerId);
+        });
+        fabEl.addEventListener('pointermove', e => {
+            if (!down) return;
+            const dx = e.clientX - sx, dy = e.clientY - sy;
+            if (!moved && Math.hypot(dx, dy) < 5) return;
+            if (!moved) {
+                moved = true;
+                fabEl.classList.add('dragging');
+                fabEl.style.right = 'auto';
+                fabEl.style.bottom = 'auto';
+            }
+            const w = fabEl.offsetWidth, h = fabEl.offsetHeight;
+            fabEl.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, ox + dx)) + 'px';
+            fabEl.style.top = Math.max(8, Math.min(window.innerHeight - h - 8, oy + dy)) + 'px';
+        });
+        const end = () => {
+            if (!down) return;
+            down = false;
+            if (!moved) return;
+            fabEl.classList.remove('dragging');
+            const w = fabEl.offsetWidth;
+            const center = fabEl.getBoundingClientRect().left + w / 2;
+            const target = center < window.innerWidth / 2 ? margin : window.innerWidth - w - margin;
+            fabEl.style.transition = 'left 0.25s ' + EASE;
+            fabEl.style.left = target + 'px';
+            setTimeout(() => { fabEl.style.transition = ''; }, 280);
+        };
+        fabEl.addEventListener('pointerup', end);
+        fabEl.addEventListener('pointercancel', end);
+    })();
+
     buildSemChart();
+    buildCategories();
     if (window.lucide) lucide.createIcons();
 </script>
 
