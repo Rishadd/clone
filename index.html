@@ -1779,75 +1779,84 @@
         .dlg-btn.grey { background: #48484a; color: #fff; }
         .dlg-btn.purple { background: var(--accent-purple); color: #fff; }
 
-        /* Splash screen */
+        /* Splash screen: robot on white (~1s) -> fades into purple -> letters fly in, dot hops across and lands as the period */
         #splash {
             position: fixed;
             inset: 0;
             z-index: 1000;
             background: #ffffff;
             overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        #splash.phase2 {
+            background: #5c63cc;
         }
 
         #splash .splash-robot {
             position: absolute;
             left: 50%;
             top: 50%;
-            width: 138px;
+            width: 243px;
+            max-width: 70vw;
             height: auto;
-            transform: translate(-50%, -54%);
-            animation: robotBob 1.3s ease-in-out infinite alternate;
+            transform: translate(-50%, -50%);
+            animation: robotIn 0.25s ease-out backwards;
+            transition: opacity 0.3s ease;
         }
 
         #splash.phase2 .splash-robot {
-            animation: robotLeave 0.7s cubic-bezier(0.5, 0, 0.9, 0.4) forwards;
-        }
-
-        .splash-purple {
-            position: absolute;
-            inset: 0;
-            background: #5c63cc;
-            clip-path: circle(0% at 50% 50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #splash.phase2 .splash-purple {
-            animation: purpleGrow 0.8s 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .splash-purple img {
-            width: 90px;
-            height: auto;
             opacity: 0;
-            transform: scale(0.85);
         }
 
-        #splash.phase2 .splash-purple img {
-            animation: logoIn 0.6s 1.0s ease-out forwards;
+        .splash-word {
+            position: absolute;
+            left: 50%;
+            top: 51.5%;
+            width: 110.6px;
+            height: 35.4px;
+            margin-left: -59px;
+            margin-top: -17.7px;
+            opacity: 0;
+        }
+
+        .splash-word .sw-letters {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 110.6px;
+            height: 35.4px;
+            transform-origin: 50% 50%;
+        }
+
+        .splash-word .sw-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 7.1px;
+            height: 7.1px;
+            border-radius: 50%;
+            background: #ffffff;
+            opacity: 0;
         }
 
         #splash.hide {
             opacity: 0;
-            transition: opacity 0.45s ease;
+            transition: opacity 0.35s ease;
             pointer-events: none;
         }
 
-        @keyframes robotBob {
-            from { transform: translate(-50%, -54%); }
-            to { transform: translate(-50%, -49%); }
+        @keyframes robotIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        @keyframes robotLeave {
-            to { transform: translate(-50%, -190%) scale(0.7); opacity: 0; }
-        }
-
-        @keyframes purpleGrow {
-            to { clip-path: circle(150% at 50% 50%); }
-        }
-
-        @keyframes logoIn {
-            to { opacity: 1; transform: scale(1); }
+        @keyframes lettersIn {
+            0%   { opacity: 0; transform: translateX(-150px) scale(2.6, 0.5) rotate(-5deg); filter: blur(7px); }
+            15%  { opacity: 1; transform: translateX(-70px) scale(0.5, 0.9) rotate(8deg); filter: blur(1px); }
+            40%  { opacity: 1; transform: translateX(-18px) scale(0.82, 0.95) rotate(3deg); filter: blur(0); }
+            70%  { opacity: 1; transform: translateX(-3px) scale(0.97, 1) rotate(-1deg); }
+            100% { opacity: 1; transform: none; filter: none; }
         }
 
         /* Shimmer skeletons shown while a screen "loads" */
@@ -2286,14 +2295,67 @@
             padding: 8px 0;
             font-weight: 500;
         }
+
+        /* Hostel Home: ID card + contacts heading stay locked while the authority cards scroll beneath */
+        :root { --hostel-top: 112px; }
+
+        .hostel-locked {
+            position: sticky;
+            top: var(--hostel-top);
+            z-index: 12;
+            background-color: var(--bg-dark);
+            padding-bottom: 2px;
+        }
+
+        .app-container,
+        .page-overlay {
+            scrollbar-width: none;
+        }
+
+        .app-container::-webkit-scrollbar,
+        .page-overlay::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hostel-locked .hostel-id-card { margin-top: 4px; }
+        .hostel-locked .authorities-header { padding-bottom: 4px; }
+
+        /* Exact category icons cut from the app (colored through a mask) */
+        .icon-img,
+        .tab-ic {
+            display: block;
+            background-color: currentColor;
+            -webkit-mask: var(--icon) center / 100% 100% no-repeat;
+            mask: var(--icon) center / 100% 100% no-repeat;
+            flex-shrink: 0;
+        }
+
+        .mod-icon.icon-img {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--accent-purple);
+        }
+
+        .top-cat-tab .tab-ic {
+            color: inherit;
+            margin-top: -1px;
+        }
+
+        .top-cat-tab .tab-ic + span {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
 
-<!-- Splash: mascot on white, then purple wipe with the wordmark -->
+<!-- Splash: robot on white, fades into purple, then the wordmark animates in -->
 <div id="splash">
     <img class="splash-robot" src="assets/robot.png" alt="">
-    <div class="splash-purple"><img src="assets/splash-logo.png" alt="IRIS"></div>
+    <div class="splash-word" id="splashWord">
+        <img class="sw-letters" id="swLetters" src="assets/splash-letters.png" alt="IRIS">
+        <span class="sw-dot" id="swDot"></span>
+    </div>
 </div>
 
 <div class="app-container">
@@ -2496,6 +2558,7 @@
         <div class="slide-host" id="hostelHost">
         <!-- TAB 1: HOME -->
         <div id="hostelTabHome" class="hostel-tab-content">
+            <div class="hostel-locked">
             <div class="hostel-id-card">
                 <div class="id-card-title">Hostel & Mess ID Card</div>
                 <div class="id-card-top">
@@ -2519,6 +2582,7 @@
             <div class="authorities-header">
                 <span>Hostel Authorities Contacts</span>
                 <i class="fa-regular fa-circle-question"></i>
+            </div>
             </div>
 
             <div class="authority-card">
@@ -3133,15 +3197,15 @@
             <!-- Top Categories Sub-Tabs -->
             <div class="top-cat-tabs">
                 <div class="top-cat-tab" id="subTabInstitute" onclick="switchCategorySubTab('institute')">
-                    <i data-lucide="landmark" class="ic"></i>
+                    <i class="tab-ic" style="--icon:url(assets/icons/tab-institute.png);width:43.7px;height:28.2px"></i>
                     <span>Institute</span>
                 </div>
                 <div class="top-cat-tab active" id="subTabAcademics" onclick="switchCategorySubTab('academics')">
-                    <i data-lucide="graduation-cap" class="ic"></i>
+                    <i class="tab-ic" style="--icon:url(assets/icons/tab-academics.png);width:34.1px;height:28.2px"></i>
                     <span>Academics</span>
                 </div>
                 <div class="top-cat-tab" id="subTabCampus" onclick="switchCategorySubTab('campus')">
-                    <svg class="ic" viewBox="0 0 18 26" style="stroke:none;fill:currentColor"><path d="M9 1.2 11.4 4.6H6.6z"/><rect x="7" y="5.4" width="4" height="3"/><path d="M7.2 9.4h3.6l.8 3.4H6.4zM6 13.8h6l1 4H5zM4.8 18.8h8.4l1.4 6.4H3.4z"/><path d="M1 2.6l3.4 1.6M17 2.6l-3.4 1.6M9 0v1M3.4 7.2 5.8 6.6M14.6 7.2l-2.4-.6" style="stroke:currentColor;stroke-width:1.2;fill:none"/></svg>
+                    <i class="tab-ic" style="--icon:url(assets/icons/tab-campus.png);width:19.2px;height:25.6px"></i>
                     <span>Campus</span>
                 </div>
             </div>
@@ -3153,19 +3217,19 @@
         <div id="gridInstitute" class="modules-grid" style="display: none;">
             <div class="mod-card">
                 <span class="mod-title">Announcements</span>
-                <i data-lucide="megaphone" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/announcements.png);width:32.5px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">No Dues</span>
-                <i data-lucide="file-edit" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/no-dues.png);width:25px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Useful Links</span>
-                <i data-lucide="link" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/useful-links.png);width:18.1px;height:24px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">IRIS Forms</span>
-                <i data-lucide="clipboard-list" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/iris-forms.png);width:22.4px;height:28.2px"></i>
             </div>
         </div>
 
@@ -3173,44 +3237,44 @@
         <div id="gridAcademics" class="modules-grid">
             <div class="mod-card" onclick="openCalendar()">
                 <span class="mod-title">Academic Calendar</span>
-                <i data-lucide="calendar-days" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/academic-calendar.png);width:30.4px;height:27.7px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Courses and Grades</span>
-                <i data-lucide="files" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/my-courses-grades.png);width:26.6px;height:28.8px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Course Registration</span>
-                <i data-lucide="clipboard-edit" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/course-registration.png);width:20.8px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">All Courses</span>
-                <i data-lucide="book" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/all-courses.png);width:21.3px;height:28.2px"></i>
             </div>
             <!-- Clicking My Credits Tracker opens Credits Tracker Page -->
             <div class="mod-card" onclick="openCreditsTracker()">
                 <span class="mod-title">My Credits Tracker</span>
-                <i data-lucide="bar-chart-3" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/credits-tracker.png);width:23.4px;height:28.8px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Grade Card</span>
-                <i data-lucide="file-text" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/grade-card.png);width:23.4px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Gyan</span>
-                <i data-lucide="lightbulb" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/gyan.png);width:27.7px;height:27.7px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Timetable</span>
-                <i data-lucide="grid-3x3" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/timetable.png);width:28.2px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">My Attendance Card</span>
-                <i data-lucide="clipboard-check" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/attendance-card.png);width:20.8px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Feedback Forms</span>
-                <i data-lucide="file-plus-2" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/feedback-forms.png);width:24px;height:27.7px"></i>
             </div>
         </div>
 
@@ -3218,43 +3282,43 @@
         <div id="gridCampus" class="modules-grid" style="display: none;">
             <div class="mod-card">
                 <span class="mod-title">Events Management</span>
-                <i data-lucide="calendar-days" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/events-management.png);width:26.6px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Infrastructure Booking</span>
-                <i data-lucide="building-2" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/infrastructure-booking.png);width:28.2px;height:28.8px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Buy and Sell</span>
-                <i data-lucide="shopping-cart" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/buy-sell.png);width:22.4px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Career Development Centre</span>
-                <svg class="mod-icon ic" viewBox="0 0 24 24"><path d="M2.5 2.5C6 4 8.5 3.6 12 2c3.5 1.6 6 2 9.500.5v9C21.500 17 17 20 12 22.500 7 20 2.500 17 2.500 11.500z"/><text x="12" y="13.500" font-size="6.200" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none" font-family="Poppins, sans-serif">CDC</text></svg>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/cdc.png);width:27.7px;height:27.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Calendar and Events (CEMS)</span>
-                <i data-lucide="calendar-days" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/cems.png);width:26.6px;height:28.2px"></i>
             </div>
             <div class="mod-card" onclick="openHostelDashboard()">
                 <span class="mod-title">Hostel Dashboard</span>
-                <svg class="mod-icon ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.500"/><circle cx="12" cy="12" r="1" fill="currentColor"/><path d="M12 1.500v6M12 16.500v6M1.500 12h6M16.500 12h6M9.500 1.500h5M9.500 22.500h5M1.500 9.500v5M22.500 9.500v5"/></svg>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/hostel-dashboard.png);width:28.2px;height:28.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Important Contacts</span>
-                <i data-lucide="contact" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/important-contacts.png);width:25.6px;height:27.7px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">NITK Maps</span>
-                <i data-lucide="map-pin" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/nitk-maps.png);width:19.2px;height:27.2px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Eduroam Account</span>
-                <i data-lucide="radio-tower" class="mod-icon ic"></i>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/eduroam.png);width:21.8px;height:22.4px"></i>
             </div>
             <div class="mod-card">
                 <span class="mod-title">Guest House Booking</span>
-                <svg class="mod-icon ic" viewBox="0 0 24 24"><path d="M1.500 11.500 12 2l10.500 9.500"/><path d="M4 9.500V22h16V9.500"/><path d="M12 11c1.700 1 3.200.9 4.300.3v3.700c0 1.900-1.700 3.200-4.300 4.200-2.600-1-4.300-2.300-4.300-4.200v-3.700c1.100.6 2.600.7 4.300-.3z"/></svg>
+                <i class="mod-icon icon-img" style="--icon:url(assets/icons/guest-house.png);width:29.8px;height:27.7px"></i>
             </div>
         </div>
 
@@ -3404,8 +3468,15 @@
     }
     function closeCreditsTracker(instant) { closeOverlay('creditsTrackerPage', instant === true); }
 
+    function syncHostelTop() {
+        const top = document.querySelector('#hostelDashboardPage .hostel-fixed-top');
+        if (top && top.offsetHeight) document.documentElement.style.setProperty('--hostel-top', top.offsetHeight + 'px');
+    }
+    window.addEventListener('resize', syncHostelTop);
+
     function openHostelDashboard() {
         openOverlay('hostelDashboardPage');
+        syncHostelTop();
         showSkeleton('hostelSkeleton', 650);
         setTimeout(initMessCarousel, 50);
     }
@@ -3659,7 +3730,7 @@
         }, ms);
     }
 
-    /* ---------- Splash: mascot on white -> purple wipe -> wordmark -> home placeholders ---------- */
+    /* ---------- Splash: robot (~1s) fades into purple, letters fly in, dot hops across and lands as the period ---------- */
     (function runSplash() {
         const splash = document.getElementById('splash');
         if (!splash) return;
@@ -3667,10 +3738,53 @@
             splash.remove();
             return;
         }
-        setTimeout(() => splash.classList.add('phase2'), 1500);
-        setTimeout(() => showSkeleton('homeSkeleton', 1000), 3300);
-        setTimeout(() => splash.classList.add('hide'), 3500);
-        setTimeout(() => splash.remove(), 4100);
+        const word = document.getElementById('splashWord');
+        const letters = document.getElementById('swLetters');
+        const dot = document.getElementById('swDot');
+
+        // Dot path (px from the top-left of the wordmark) sampled from the recording
+        const D = 3.55; // half the dot size
+        const path = [
+            // t,   x,    y,   rot, sx,  sy
+            [0.00, -38,   14,   0,  1.8, 1.0],
+            [0.10,   4,  -37, -28,  3.2, 0.9],
+            [0.20,  26,  -44, -12,  2.4, 0.9],
+            [0.30,  55,  -48,  -4,  1.7, 1.0],
+            [0.40,  66,  -49,   0,  1.0, 1.0],
+            [0.50,  72,  -50,   0,  1.0, 1.0],
+            [0.60,  92,  -28,  62,  2.6, 0.9],
+            [0.70, 113,   24,  80,  1.7, 1.2],
+            [0.80, 121,   14,   0,  1.0, 1.0],
+            [0.90, 119,   14,   0,  1.0, 1.0],
+            [1.00, 118,   17,   0,  1.0, 1.0],
+            [1.10, 115.5, 29.6, 0,  1.0, 1.0]
+        ];
+        const DOT_MS = 1100;
+
+        setTimeout(() => {
+            splash.classList.add('phase2');             // robot fades while the white turns purple
+        }, 1000);
+
+        setTimeout(() => {
+            word.style.opacity = '1';
+            letters.animate([
+                { opacity: 0, transform: 'translateX(-150px) scale(2.6,0.5) rotate(-5deg)', filter: 'blur(7px)', offset: 0 },
+                { opacity: 1, transform: 'translateX(-70px) scale(0.5,0.9) rotate(8deg)', filter: 'blur(1px)', offset: 0.15 },
+                { opacity: 1, transform: 'translateX(-18px) scale(0.82,0.95) rotate(3deg)', filter: 'blur(0px)', offset: 0.4 },
+                { opacity: 1, transform: 'translateX(-3px) scale(0.97,1) rotate(-1deg)', offset: 0.7 },
+                { opacity: 1, transform: 'none', filter: 'blur(0px)', offset: 1 }
+            ], { duration: 500, easing: 'ease-out', fill: 'forwards' });
+
+            dot.style.opacity = '1';
+            dot.animate(path.map(k => ({
+                offset: k[0] / 1.1,
+                transform: 'translate(' + (k[1] - D) + 'px,' + (k[2] - D) + 'px) rotate(' + k[3] + 'deg) scale(' + k[4] + ',' + k[5] + ')'
+            })), { duration: DOT_MS, easing: 'linear', fill: 'forwards' });
+        }, 1300);
+
+        setTimeout(() => showSkeleton('homeSkeleton', 1000), 3150);
+        setTimeout(() => splash.classList.add('hide'), 3250);
+        setTimeout(() => splash.remove(), 3700);
     })();
 
     /* ---------- Notifications, announcement page ---------- */
